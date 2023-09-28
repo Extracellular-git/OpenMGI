@@ -22,41 +22,41 @@ def first_feature():
     * 顺序不要弄乱了。否则识别错误
     """
     return [
-        ("POS1","TipGEBAF250A","Tips for spent media 1","",False,True,""),
-        ("POS2","TipGEBAF250A","Tips for spent media 2","",False,True,""),
-        ("POS3","TipGEBAF250A","Tips for spent media 3","",False,True,""),
-        ("POS4","TipGEBAF250A","Tips for spent media 4","",False,True,""),
-        ("POS5","TipGEBAF250A","Tips for spent media 5","",False,True,""),
-        ("POS6","TipGEBAF250A","Tips for spent media 6","",False,True,""),
-        ("POS7","TipGEBAF250A","Tips for spent media 7","",False,True,""),
-        ("POS8","TipGEBAF250A","Tips for spent media 8","",False,True,""),
-        ("POS9","","96_wellplate","Cell plate 1",False,True,""),
-        ("POS10","","96_wellplate","Cell plate 2",False,True,""),
-        ("POS11","","96_wellplate","Cell plate 3",False,True,""),
-        ("POS12","","96_wellplate","Cell plate 4",False,True,""),
-        ("POS13","","96_wellplate","Cell plate 5",False,True,""),
-        ("POS14","","96_wellplate","Cell plate 6",False,True,""),
-        ("POS15","","96_wellplate","Cell plate 7",False,True,""),
-        ("POS16","","96_wellplate","Cell plate 8",False,True,""),
-        ("POS17","SuzhouChenxuCAR-190NS","Spent media reservoir","",False,True,""),
+        ("POS1","TipGEBAF250A","Tips for Buffer","",False,True,""),
+        ("POS2","","","",False,True,""),
+        ("POS3","","","",False,True,""),
+        ("POS4","","","",False,True,""),
+        ("POS5","","","",False,True,""),
+        ("POS6","","","",False,True,""),
+        ("POS7","","","",False,True,""),
+        ("POS8","","","",False,True,""),
+        ("POS9","","96_wellplate","Samples plate 1",False,True,""),
+        ("POS10","","96_wellplate","Samples plate 2",False,True,""),
+        ("POS11","","96_wellplate","Samples plate 3",False,True,""),
+        ("POS12","","96_wellplate","Samples plate 4",False,True,""),
+        ("POS13","","96_wellplate","Samples plate 5",False,True,""),
+        ("POS14","","96_wellplate","Samples plate 6",False,True,""),
+        ("POS15","","96_wellplate","Samples plate 7",False,True,""),
+        ("POS16","","96_wellplate","Samples plate 8",False,True,""),
+        ("POS17","TipGEBAF250A","Tips for standard curve","",False,True,""),
         ("POS18","","","",False,True,"Magnet"),
         ("POS19","TipGEBAF250A","Waste","",False,True,""),
         ("POS20","","Teleshake","",False,True,"Shaker"),
         ("POS21","","Heat block","",False,True,"Temp"),
-        ("POS22","TipGEBAF250A","Tips for new media","",False,True,""),
-        ("POS23","SuzhouChenxuCAR-190NS","New media reservoir","",False,True,""),
+        ("POS22","VDeepwellPlateDN07350501","Standard curve DW plate","",False,True,""),
+        ("POS23","SuzhouChenxuCAR-190NS","Buffer A","",False,True,""),
         ("POS24","","","",False,True,"")
     ]
 
 binding_map({
     "POS1":["TipGEBAF250A", None, None],
-    "POS2":["TipGEBAF250A", None, None],
-    "POS3":["TipGEBAF250A", None, None],
-    "POS4":["TipGEBAF250A", None, None],
-    "POS5":["TipGEBAF250A", None, None],
-    "POS6":["TipGEBAF250A", None, None],
-    "POS7":["TipGEBAF250A", None, None],
-    "POS8":["TipGEBAF250A", None, None],
+    "POS2":["useless", None, None],
+    "POS3":["useless", None, None],
+    "POS4":["useless", None, None],
+    "POS5":["useless", None, None],
+    "POS6":["useless", None, None],
+    "POS7":["useless", None, None],
+    "POS8":["useless", None, None],
     "POS9":["96_wellplate", None, None],
     "POS10":["96_wellplate", None, None],
     "POS11":["96_wellplate", None, None],
@@ -65,35 +65,39 @@ binding_map({
     "POS14":["96_wellplate", None, None],
     "POS15":["96_wellplate", None, None],
     "POS16":["96_wellplate", None, None],
-    "POS17":["SuzhouChenxuCAR-190NS", None, None],
+    "POS17":["TipGEBAF250A", None, None],
     "POS18":[None, None, None],
     "POS19":["TipGEBAF250A", None, None],
     "POS20":[None, None, "shake"],
     "POS21":[None, None, None],
-    "POS22":["TipGEBAF250A", None, None],
+    "POS22":["VDeepwellPlateDN07350501", None, None],
     "POS23":["SuzhouChenxuCAR-190NS", None, None],
-    "POS24":[None, None, None]
+    "POS24":["SuzhouChenxuCAR-190NS", None, None]
 })
-# carry on from here TODO
 #deck block end
 #defining the default user inputed variables 
 number_plates = 1 #
 shake_choice = "n" #
 incubation_time = 0 #
 #asks the user for the inputs
-s_require3_result = require3([],[{"number plates":[""]},{"incubation time (min)":[""]},{"Would you like to shake after assay? (y/n)":[""]}])
+first_require3_result = require3([],[{"number plates":[""]},{"incubation time (min)":[""]},{"Would you like to shake after assay? (y/n)":["y", "n"]}])
 #indexes the provided user inputs and converts data type as appropriate
-number_plates = int(s_require3_result.Item2[0])
-incubation_time = int(s_require3_result.Item2[1])
-shake_choice = s_require3_result.Item2[2]
+number_plates = int(first_require3_result.Item2[0])
+incubation_time = int(first_require3_result.Item2[1])
+shake_choice = first_require3_result.Item2[2]
+# second set of questions
+col_question = require3([],[{"How many columns from left for standard curve?":[3,""]},{"How many empty columns on right?":[0, ""]}])
+std_col = int(col_question.Item2[0])
+emp_col = int(col_question.Item2[1])
 #Turns minutes into seconds
 incubation_time = incubation_time*60
 
 #defining the different iterable parameters required for the assay
 #Where the tips for the diluent are stored
 tips_list_reagent_1 = ["POS1"]
+
 # The columns of the plate in which the standard curve are dispensed
-target_standard_curve_column_list = [1,2,3]
+target_standard_curve_column_list = list(range(1, std_col + 1))
 # List of positions in which the plates are placed (8 total)
 cells_list =["POS9", "POS10", "POS11", "POS12", "POS13", "POS14", "POS15", "POS16"]
 #workflow block begins
@@ -107,10 +111,9 @@ if number_plates <= 4:
     aspiration_volume = (number_plates * 30) + 10
     aspirate({"Module":"POS22","Tips":8,"Col":1,"Row":1,"AspirateVolume":aspiration_volume,"BottomOffsetOfZ":0.5,"AspirateRateOfP":100,"PreAirVolume":5,"PostAirVolume":0,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":10,"TipTouchOffsetOfX":3,"SecondRouteRate":10})
     for plate in range(number_plates):
-        dispense({"Module":cells_list[plate],"Tips":8,"Col":target_standard_curve_column_list[0],"Row":1,"DispenseVolume":10,"BottomOffsetOfZ":10,"DispenseRateOfP":100,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":10,"TipTouchOffsetOfX":3,"SecondRouteRate":10,"EmptyForDispense":False,"EmptyForDispenseOffsetOfZ":10,"EmptyForDispenseDely":0.5})
-        dispense({"Module":cells_list[plate],"Tips":8,"Col":target_standard_curve_column_list[1],"Row":1,"DispenseVolume":10,"BottomOffsetOfZ":10,"DispenseRateOfP":100,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":10,"TipTouchOffsetOfX":3,"SecondRouteRate":10,"EmptyForDispense":False,"EmptyForDispenseOffsetOfZ":10,"EmptyForDispenseDely":0.5})
-        dispense({"Module":cells_list[plate],"Tips":8,"Col":target_standard_curve_column_list[2],"Row":1,"DispenseVolume":10,"BottomOffsetOfZ":10,"DispenseRateOfP":100,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":10,"TipTouchOffsetOfX":3,"SecondRouteRate":10,"EmptyForDispense":False,"EmptyForDispenseOffsetOfZ":10,"EmptyForDispenseDely":0.5})
-    #unload tips without emptying as emptying is not necessary here
+        for col in target_standard_curve_column_list:
+            dispense({"Module":cells_list[plate],"Tips":8,"Col":col,"Row":1,"DispenseVolume":10,"BottomOffsetOfZ":10,"DispenseRateOfP":100,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":10,"TipTouchOffsetOfX":3,"SecondRouteRate":10,"EmptyForDispense":False,"EmptyForDispenseOffsetOfZ":10,"EmptyForDispenseDely":0.5})
+            #unload tips without emptying as emptying is not necessary here
     unload_tips({"Module":"POS19","Tips":8,"Col":6,"Row":1})
 
 #if there are more than 4 plates, then 2 aspiration events are required to cover all the plates
@@ -138,14 +141,16 @@ if number_plates > 4:
     unload_tips({"Module":"POS19","Tips":8,"Col":6,"Row":1})
 
 # Adding assay buffer
-load_tips({"Module":tips_list_reagent_1[0],"Tips":96,"Col":1,"Row":1})  
+# To account for empty cols on the right, we need to adjust the load tips col.
+offset_col = 1 + emp_col
+load_tips({"Module":tips_list_reagent_1[0],"Tips":96,"Col":offset_col,"Row":1})  
 for plate in range(int(number_plates)):
     aspirate({"Module":"POS23","Tips":96,"Col":1,"Row":1,"AspirateVolume":130,"BottomOffsetOfZ":0.5,"AspirateRateOfP":100,"PreAirVolume":5,"PostAirVolume":0,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":35,"TipTouchOffsetOfX":5,"SecondRouteRate":10})
     dispense({"Module":cells_list[plate],"Tips":96,"Col":1,"Row":1,"DispenseVolume":125,"BottomOffsetOfZ":10,"DispenseRateOfP":100,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":10,"TipTouchOffsetOfX":3,"SecondRouteRate":10,"EmptyForDispense":False,"EmptyForDispenseOffsetOfZ":10,"EmptyForDispenseDely":0.5})
     #Reusing tips so need to empty between uses, changed dispense rate from 100 to 1000 for all empty events for more complete residue clearance
-    empty({"Module":"POS23","Tips":96,"Col":1,"Row":1,"BottomOffsetOfZ":35,"DispenseRateOfP":1000,"DelySeconds":0.5,"IfTipTouch":True,"TipTouchHeight":1,"TipTouchOffsetOfX":5,"SecondRouteRate":10})
+    empty({"Module":"POS23","Tips":96,"Col":1,"Row":1,"BottomOffsetOfZ":35,"DispenseRateOfP":1000,"DelySeconds":0.5,"IfTipTouch":False,"TipTouchHeight":1,"TipTouchOffsetOfX":5,"SecondRouteRate":10})
     
-unload_tips({"Module":tips_list_reagent_1[0],"Tips":96,"Col":1,"Row":1})
+unload_tips({"Module":tips_list_reagent_1[0],"Tips":96,"Col":offset_col,"Row":1})
     
 #waiting for the incubation time as defined by the user
 dely(incubation_time)
