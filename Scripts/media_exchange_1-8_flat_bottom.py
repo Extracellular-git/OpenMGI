@@ -49,13 +49,13 @@ def first_feature():
             True,
             "",
         ),
-        ("POS18", "", "", "", False, True, "Magnet"),
+        ("POS18", "", "Magnet", "", False, True, "Magnet"),
         ("POS19", "TipGEBAF250A", "Waste", "", False, True, ""),
         ("POS20", "", "Teleshake", "", False, True, "Shaker"),
         ("POS21", "", "Heat block", "", False, True, "Temp"),
-        ("POS22", "TipGEBAF250A", "Tips for new media", "", False, True, ""),
+        ("POS22", "", "", "", False, True, ""),
         ("POS23", "SuzhouChenxuCAR-190NS", "New media reservoir", "", False, True, ""),
-        ("POS24", "", "", "", False, True, ""),
+        ("POS24", "TipGEBAF250A", "Tips for new media", "", False, True, ""),
     ]
 
 
@@ -82,9 +82,9 @@ binding_map(
         "POS19": ["TipGEBAF250A", None, None],
         "POS20": [None, None, "shake"],
         "POS21": [None, None, None],
-        "POS22": ["TipGEBAF250A", None, None],
+        "POS22": [None, None, None],
         "POS23": ["SuzhouChenxuCAR-190NS", None, None],
-        "POS24": [None, None, None],
+        "POS24": ["TipGEBAF250A", None, None],
     }
 )
 # deck block end
@@ -92,7 +92,7 @@ binding_map(
 # defining the default user inputed variables
 number_plates = 1
 in_media_vol = 180
-aspirate_z_offset = 0.5
+aspirate_z_offset = 1
 # asks the user for the inputs
 s_require3_result = require3(
     [],
@@ -108,10 +108,10 @@ in_media_vol = int(s_require3_result.Item2[1])
 # defining the different iterable parameters required for the assay
 # Where the tips for the transfers are stored
 tips_list = ["POS1", "POS2", "POS3", "POS4", "POS5", "POS6", "POS7", "POS8"]
-use_tips_list = tips_list[0 : number_plates - 1]
+use_tips_list = tips_list[0 : number_plates]
 # List of positions in which the plates are placed (8 total)
 plates_list = ["POS9", "POS10", "POS11", "POS12", "POS13", "POS14", "POS15", "POS16"]
-use_plates_list = plates_list[0 : number_plates - 1]
+use_plates_list = plates_list[0 : number_plates]
 # workflow block begins
 home()
 
@@ -142,9 +142,9 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Tips": 96,
             "Col": 1,
             "Row": 1,
-            "BottomOffsetOfZ": 35,
-            "DispenseRateOfP": 1000,
-            "DelySeconds": 0.5,
+            "BottomOffsetOfZ": 25,
+            "DispenseRateOfP": 100,
+            "DelySeconds": 0,
             "IfTipTouch": False,
             "TipTouchHeight": 1,
             "TipTouchOffsetOfX": 5,
@@ -155,7 +155,7 @@ for idx, plate_pos in enumerate(use_plates_list):
 
 # TODO Add fresh media from reservoir to each plate in use. use only 1 set of tips, do not touch bottom.
 
-load_tips({"Module": "POS22", "Tips": 96, "Col": 1, "Row": 1})
+load_tips({"Module": "POS24", "Tips": 96, "Col": 1, "Row": 1})
 for idx, plate_pos in enumerate(use_plates_list):
     # Load fresh media
     aspirate(
@@ -165,14 +165,11 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Col": 1,
             "Row": 1,
             "AspirateVolume": in_media_vol,
-            "BottomOffsetOfZ": 35,
-            "AspirateRateOfP": 150,
-            "PreAirVolume": 5,
-            "PostAirVolume": 0,
+            "BottomOffsetOfZ": 10,
+            "AspirateRateOfP": 80,
+            "PreAirVolume": 0,
+            "PostAirVolume": 10,
             "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 10,
-            "TipTouchOffsetOfX": 3,
             "SecondRouteRate": 35,
         }
     )
@@ -184,12 +181,12 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Col": 1,
             "Row": 1,
             "BottomOffsetOfZ": 10,
-            "DispenseRateOfP": 100,
+            "DispenseRateOfP":80,
             "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 1,
+            "IfTipTouch": True,
+            "TipTouchHeight": 8,
             "TipTouchOffsetOfX": 5,
-            "SecondRouteRate": 10,
+            "SecondRouteRate": 35,
         }
     )
 unload_tips({"Module": "POS22", "Tips": 96, "Col": 1, "Row": 1})
