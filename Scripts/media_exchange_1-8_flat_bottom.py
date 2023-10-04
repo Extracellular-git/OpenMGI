@@ -24,22 +24,22 @@ def first_feature():
     * 顺序不要弄乱了。否则识别错误
     """
     return [
-        ("POS1", "TipGEBAF250A", "Tips for spent media 1", "", False, True, ""),
-        ("POS2", "TipGEBAF250A", "Tips for spent media 2", "", False, True, ""),
-        ("POS3", "TipGEBAF250A", "Tips for spent media 3", "", False, True, ""),
-        ("POS4", "TipGEBAF250A", "Tips for spent media 4", "", False, True, ""),
-        ("POS5", "TipGEBAF250A", "Tips for spent media 5", "", False, True, ""),
-        ("POS6", "TipGEBAF250A", "Tips for spent media 6", "", False, True, ""),
-        ("POS7", "TipGEBAF250A", "Tips for spent media 7", "", False, True, ""),
-        ("POS8", "TipGEBAF250A", "Tips for spent media 8", "", False, True, ""),
-        ("POS9", "96_wellplate_flat_bottom", "Cell plate 1", "", False, True, ""),
-        ("POS10", "96_wellplate_flat_bottom", "Cell plate 2", "", False, True, ""),
-        ("POS11", "96_wellplate_flat_bottom", "Cell plate 3", "", False, True, ""),
-        ("POS12", "96_wellplate_flat_bottom", "Cell plate 4", "", False, True, ""),
-        ("POS13", "96_wellplate_flat_bottom", "Cell plate 5", "", False, True, ""),
-        ("POS14", "96_wellplate_flat_bottom", "Cell plate 6", "", False, True, ""),
-        ("POS15", "96_wellplate_flat_bottom", "Cell plate 7", "", False, True, ""),
-        ("POS16", "96_wellplate_flat_bottom", "Cell plate 8", "", False, True, ""),
+        ("POS1", "96_wellplate_flat_bottom", "Cell plate 1", "", False, True, ""),
+        ("POS2", "96_wellplate_flat_bottom", "Cell plate 2", "", False, True, ""),
+        ("POS3", "96_wellplate_flat_bottom", "Cell plate 3", "", False, True, ""),
+        ("POS4", "96_wellplate_flat_bottom", "Cell plate 4", "", False, True, ""),
+        ("POS5", "96_wellplate_flat_bottom", "Cell plate 5", "", False, True, ""),
+        ("POS6", "96_wellplate_flat_bottom", "Cell plate 6", "", False, True, ""),
+        ("POS7", "96_wellplate_flat_bottom", "Cell plate 7", "", False, True, ""),
+        ("POS8", "96_wellplate_flat_bottom", "Cell plate 8", "", False, True, ""),
+        ("POS9", "TipGEBAF250A", "Tips for spent media 1", "", False, True, ""),
+        ("POS10", "TipGEBAF250A", "Tips for spent media 2", "", False, True, ""),
+        ("POS11", "TipGEBAF250A", "Tips for spent media 3", "", False, True, ""),
+        ("POS12", "TipGEBAF250A", "Tips for spent media 4", "", False, True, ""),
+        ("POS13", "TipGEBAF250A", "Tips for spent media 5", "", False, True, ""),
+        ("POS14", "TipGEBAF250A", "Tips for spent media 6", "", False, True, ""),
+        ("POS15", "TipGEBAF250A", "Tips for spent media 7", "", False, True, ""),
+        ("POS16", "TipGEBAF250A", "Tips for spent media 8", "", False, True, ""),
         (
             "POS17",
             "SuzhouChenxuCAR-190NS",
@@ -61,22 +61,22 @@ def first_feature():
 
 binding_map(
     {
-        "POS1": ["TipGEBAF250A", None, None],
-        "POS2": ["TipGEBAF250A", None, None],
-        "POS3": ["TipGEBAF250A", None, None],
-        "POS4": ["TipGEBAF250A", None, None],
-        "POS5": ["TipGEBAF250A", None, None],
-        "POS6": ["TipGEBAF250A", None, None],
-        "POS7": ["TipGEBAF250A", None, None],
-        "POS8": ["TipGEBAF250A", None, None],
-        "POS9": ["96_wellplate_flat_bottom", None, None],
-        "POS10": ["96_wellplate_flat_bottom", None, None],
-        "POS11": ["96_wellplate_flat_bottom", None, None],
-        "POS12": ["96_wellplate_flat_bottom", None, None],
-        "POS13": ["96_wellplate_flat_bottom", None, None],
-        "POS14": ["96_wellplate_flat_bottom", None, None],
-        "POS15": ["96_wellplate_flat_bottom", None, None],
-        "POS16": ["96_wellplate_flat_bottom", None, None],
+        "POS1": ["96_wellplate_flat_bottom", None, None],
+        "POS2": ["96_wellplate_flat_bottom", None, None],
+        "POS3": ["96_wellplate_flat_bottom", None, None],
+        "POS4": ["96_wellplate_flat_bottom", None, None],
+        "POS5": ["96_wellplate_flat_bottom", None, None],
+        "POS6": ["96_wellplate_flat_bottom", None, None],
+        "POS7": ["96_wellplate_flat_bottom", None, None],
+        "POS8": ["96_wellplate_flat_bottom", None, None],
+        "POS9": ["TipGEBAF250A", None, None],
+        "POS10": ["TipGEBAF250A", None, None],
+        "POS11": ["TipGEBAF250A", None, None],
+        "POS12": ["TipGEBAF250A", None, None],
+        "POS13": ["TipGEBAF250A", None, None],
+        "POS14": ["TipGEBAF250A", None, None],
+        "POS15": ["TipGEBAF250A", None, None],
+        "POS16": ["TipGEBAF250A", None, None],
         "POS17": ["SuzhouChenxuCAR-190NS", None, None],
         "POS18": [None, None, None],
         "POS19": ["TipGEBAF250A", None, None],
@@ -106,12 +106,12 @@ number_plates = int(s_require3_result.Item2[0])
 in_media_vol = int(s_require3_result.Item2[1])
 
 # defining the different iterable parameters required for the assay
-# Where the tips for the transfers are stored
-tips_list = ["POS1", "POS2", "POS3", "POS4", "POS5", "POS6", "POS7", "POS8"]
-use_tips_list = tips_list[0 : number_plates]
 # List of positions in which the plates are placed (8 total)
-plates_list = ["POS9", "POS10", "POS11", "POS12", "POS13", "POS14", "POS15", "POS16"]
+plates_list = ["POS1", "POS2", "POS3", "POS4", "POS5", "POS6", "POS7", "POS8"]
 use_plates_list = plates_list[0 : number_plates]
+# List of positions in which the tips are placed (8 total)
+tips_list = ["POS9", "POS10", "POS11", "POS12", "POS13", "POS14", "POS15", "POS16"]
+use_tips_list = tips_list[0 : number_plates]
 # workflow block begins
 home()
 
@@ -142,11 +142,11 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Tips": 96,
             "Col": 1,
             "Row": 1,
-            "BottomOffsetOfZ": 25,
+            "BottomOffsetOfZ": 5,
             "DispenseRateOfP": 100,
             "DelySeconds": 0,
             "PostAirVolume": 10,
-            "IfTipTouch": True,
+            "IfTipTouch": False,
             "TipTouchHeight": 25,
             "TipTouchOffsetOfX": 5,
             "SecondRouteRate": 10,
@@ -182,7 +182,7 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Col": 1,
             "Row": 1,
             "BottomOffsetOfZ": 11,
-            "DispenseRateOfP":80,
+            "DispenseRateOfP":50,
             "DelySeconds": 0,
             "IfTipTouch": True,
             "TipTouchHeight": 8,
