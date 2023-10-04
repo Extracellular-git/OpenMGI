@@ -145,8 +145,8 @@ for idx, plate_pos in enumerate(use_plates_list):
             "BottomOffsetOfZ": 25,
             "DispenseRateOfP": 100,
             "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 1,
+            "IfTipTouch": True,
+            "TipTouchHeight": 25,
             "TipTouchOffsetOfX": 5,
             "SecondRouteRate": 10,
         }
@@ -180,16 +180,16 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Tips": 96,
             "Col": 1,
             "Row": 1,
-            "BottomOffsetOfZ": 10,
+            "BottomOffsetOfZ": 12,
             "DispenseRateOfP":80,
             "DelySeconds": 0,
             "IfTipTouch": True,
             "TipTouchHeight": 8,
-            "TipTouchOffsetOfX": 5,
+            "TipTouchOffsetOfX": 2,
             "SecondRouteRate": 35,
         }
     )
-unload_tips({"Module": "POS22", "Tips": 96, "Col": 1, "Row": 1})
+unload_tips({"Module": "POS24", "Tips": 96, "Col": 1, "Row": 1})
 
 home()
 # workflow block end
