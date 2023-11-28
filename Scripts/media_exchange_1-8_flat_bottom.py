@@ -92,7 +92,7 @@ binding_map(
 # defining the default user inputed variables
 number_plates = 1
 in_media_vol = 180
-aspirate_z_offset = 1
+aspirate_z_offset = 0.4
 # asks the user for the inputs
 s_require3_result = require3(
     [],
@@ -108,10 +108,10 @@ in_media_vol = int(s_require3_result.Item2[1])
 # defining the different iterable parameters required for the assay
 # List of positions in which the plates are placed (8 total)
 plates_list = ["POS1", "POS2", "POS3", "POS4", "POS5", "POS6", "POS7", "POS8"]
-use_plates_list = plates_list[0 : number_plates]
+use_plates_list = plates_list[0:number_plates]
 # List of positions in which the tips are placed (8 total)
 tips_list = ["POS9", "POS10", "POS11", "POS12", "POS13", "POS14", "POS15", "POS16"]
-use_tips_list = tips_list[0 : number_plates]
+use_tips_list = tips_list[0:number_plates]
 # workflow block begins
 home()
 
@@ -127,11 +127,11 @@ for idx, plate_pos in enumerate(use_plates_list):
             "AspirateVolume": 200,
             "BottomOffsetOfZ": aspirate_z_offset,
             "AspirateRateOfP": 100,
-            "PreAirVolume": 5,
+            "PreAirVolume": 0,
             "PostAirVolume": 0,
-            "DelySeconds": 0.5,
+            "DelySeconds": 0,
             "IfTipTouch": False,
-            "TipTouchHeight": 10,
+            "TipTouchHeight": 8,
             "TipTouchOffsetOfX": 3,
             "SecondRouteRate": 10,
         }
@@ -182,7 +182,7 @@ for idx, plate_pos in enumerate(use_plates_list):
             "Col": 1,
             "Row": 1,
             "BottomOffsetOfZ": 11,
-            "DispenseRateOfP":50,
+            "DispenseRateOfP": 50,
             "DelySeconds": 0,
             "IfTipTouch": True,
             "TipTouchHeight": 8,
