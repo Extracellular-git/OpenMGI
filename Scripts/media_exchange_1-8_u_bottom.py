@@ -92,7 +92,7 @@ binding_map(
 # defining the default user inputed variables
 number_plates = 1
 in_media_vol = 180
-aspirate_z_offset = 0.5
+aspirate_z_offset = 0.4
 # asks the user for the inputs
 s_require3_result = require3(
     [],
