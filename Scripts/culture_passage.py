@@ -52,7 +52,7 @@ def first_feature():
         (
             "POS18",
             "SuzhouChenxuCAR-190NS",
-            "PBS tip wash reservoir",
+            "PBS plate wash reservoir",
             "",
             False,
             True,
@@ -63,7 +63,7 @@ def first_feature():
         (
             "POS21",
             "SuzhouChenxuCAR-190NS",
-            "PBS plate wash reservoir",
+            "PBS tip wash reservoir",
             "",
             False,
             True,
@@ -185,7 +185,7 @@ update_feature(
         (
             "POS18",
             "SuzhouChenxuCAR-190NS",
-            "PBS tip wash reservoir",
+            "PBS plate wash reservoir",
             "",
             False,
             True,
@@ -196,7 +196,7 @@ update_feature(
         (
             "POS21",
             "SuzhouChenxuCAR-190NS",
-            "PBS plate wash reservoir",
+            "PBS tip wash reservoir",
             "",
             False,
             True,
