@@ -114,6 +114,8 @@ binding_map(
 # deck block end
 # constants
 waste = "POS19"
+waste_height_offset = 30
+waste_touch_offset = 6
 shake = "POS20"
 pbs_plate_wash = "POS18"
 pbs_tip_wash = "POS21"
@@ -284,12 +286,12 @@ for plate_idx, plate_pos in enumerate(old_plates_list):
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "BottomOffsetOfZ": 30,
+                "BottomOffsetOfZ": waste_height_offset,
                 "DispenseRateOfP": 100,
                 "DelySeconds": 0,
                 "IfTipTouch": True,
-                "TipTouchHeight": 30,
-                "TipTouchOffsetOfX": 4,
+                "TipTouchHeight": waste_height_offset,
+                "TipTouchOffsetOfX": waste_touch_offset,
                 "SecondRouteRate": 35,
             }
         )
@@ -410,12 +412,12 @@ for cycle in range(pbs_wash_cycle):
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "BottomOffsetOfZ": 30,
+                "BottomOffsetOfZ": waste_height_offset,
                 "DispenseRateOfP": 100,
                 "DelySeconds": 0,
                 "IfTipTouch": True,
-                "TipTouchHeight": 30,
-                "TipTouchOffsetOfX": 4,
+                "TipTouchHeight": waste_height_offset,
+                "TipTouchOffsetOfX": waste_touch_offset,
                 "SecondRouteRate": 35,
             }
         )
@@ -466,12 +468,12 @@ empty(
         "Tips": 96,
         "Col": 1,
         "Row": 1,
-        "BottomOffsetOfZ": 30,
+        "BottomOffsetOfZ": waste_height_offset,
         "DispenseRateOfP": 100,
         "DelySeconds": 0,
         "IfTipTouch": True,
-        "TipTouchHeight": 30,
-        "TipTouchOffsetOfX": 4,
+        "TipTouchHeight": waste_height_offset,
+        "TipTouchOffsetOfX": waste_touch_offset,
         "SecondRouteRate": 35,
     }
 )
@@ -566,7 +568,7 @@ for num, plate in enumerate(old_plates_list):
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "BottomOffsetOfZ": 4,
+                "BottomOffsetOfZ": 10,
                 "DispenseRateOfP": aspirate_speed,
                 "PreAirVolume": 0,
                 "PostAirVolume": 0,
