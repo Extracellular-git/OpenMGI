@@ -334,7 +334,7 @@ else:
 pbs_aspirate_vol = 50 * number_plates / repeat
 for cycle in range(pbs_wash_cycle):
     report("PBS plate wash Cycle " + str(cycle + 1), "Start")
-    for idx in range(repeat):
+    for plate_group in range(repeat):
         report("PBS plate wash Cycle " + str(cycle + 1), "Aspirate PBS")
         aspirate(
             {
@@ -352,31 +352,30 @@ for cycle in range(pbs_wash_cycle):
                 "SecondRouteRate": 35,
             }
         )
-        for plate_group in range(repeat):
-            for plate in old_plates_list_wash[plate_group]:
-                report(
-                    "PBS plate wash Cycle " + str(cycle + 1),
-                    "Dispense PBS into plate "
-                    + str(plate)
-                    + ", Plate group "
-                    + str(plate_group + 1),
-                )
-                dispense(
-                    {
-                        "Module": plate,
-                        "Tips": 96,
-                        "Col": 1,
-                        "Row": 1,
-                        "DispenseVolume": 50,
-                        "BottomOffsetOfZ": 10,
-                        "DispenseRateOfP": 60,
-                        "DelySeconds": 0,
-                        "IfTipTouch": True,
-                        "TipTouchHeight": 10,
-                        "TipTouchOffsetOfX": 3,
-                        "SecondRouteRate": 35,
-                    }
-                )
+        for plate in old_plates_list_wash[plate_group]:
+            report(
+                "PBS plate wash Cycle " + str(cycle + 1),
+                "Dispense PBS into plate "
+                + str(plate)
+                + ", Plate group "
+                + str(plate_group + 1),
+            )
+            dispense(
+                {
+                    "Module": plate,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "DispenseVolume": 50,
+                    "BottomOffsetOfZ": 10,
+                    "DispenseRateOfP": 60,
+                    "DelySeconds": 0,
+                    "IfTipTouch": True,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
     unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
     for plate in old_plates_list:
         report("PBS plate wash Cycle " + str(cycle + 1), "Shake plate " + str(plate))
