@@ -108,10 +108,10 @@ in_media_vol = int(s_require3_result.Item2[1])
 # defining the different iterable parameters required for the assay
 # Where the tips for the transfers are stored
 tips_list = ["POS1", "POS2", "POS3", "POS4", "POS5", "POS6", "POS7", "POS8"]
-use_tips_list = tips_list[0 : number_plates - 1]
+use_tips_list = tips_list[0:number_plates]
 # List of positions in which the plates are placed (8 total)
 plates_list = ["POS9", "POS10", "POS11", "POS12", "POS13", "POS14", "POS15", "POS16"]
-use_plates_list = plates_list[0 : number_plates - 1]
+use_plates_list = plates_list[0:number_plates]
 # workflow block begins
 home()
 
