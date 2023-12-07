@@ -58,7 +58,7 @@ def first_feature():
             True,
             "Magnet",
         ),
-        ("POS19", "SuzhouChenxuCAR-190NS", "WASTE", "", False, True, ""),
+        ("POS19", "VDeepwellPlateDN07350501", "WASTE", "", False, True, ""),
         ("POS20", "", "Teleshake", "", False, True, "Shaker"),
         (
             "POS21",
@@ -103,7 +103,7 @@ binding_map(
         "POS16": ["96_wellplate_flat_bottom", None, None],
         "POS17": ["TipGEBAF250A", None, None],
         "POS18": ["SuzhouChenxuCAR-190NS", None, None],
-        "POS19": ["SuzhouChenxuCAR-190NS", None, None],
+        "POS19": ["VDeepwellPlateDN07350501", None, None],
         "POS20": [None, None, "shake"],
         "POS21": ["SuzhouChenxuCAR-190NS", None, None],
         "POS22": ["TipGEBAF250A", None, None],
@@ -123,10 +123,10 @@ old_media_tips = "POS22"
 tryple_tips = "POS1"
 tryple_res = "POS23"
 pbs_plate_wash_tips = "POS2"
-pbs_wash_cycle = 2
 new_media_res = "POS24"
 # defining the default user input variables
 plate_type = "96_wellplate_flat_bottom"
+pbs_wash_cycle = 2
 number_plates = 1
 out_media_vol = 180
 new_media_vol = 180
@@ -139,6 +139,12 @@ s_require3_result = require3(
     [
         {"Number of plates": ["1", "Integer between 1-4"]},
         {"Volume of media to remove": ["200", "Integer between 0-300"]},
+        {
+            "Number of PBS plate-wash cycles": [
+                "2",
+                "Integer greater than or equal to 0",
+            ]
+        },
         {"Volume of fresh media": ["180", "Integer between 0-300"]},
         {"Volume to inoculate": ["20", "Integer between 0-175"]},
         {"Aspiration height offset": ["0.4", "mm of height offset, between 0-10"]},
@@ -149,10 +155,11 @@ s_require3_result = require3(
 plate_type = s_require3_result.Item1[0]
 number_plates = min(int(s_require3_result.Item2[0]), 4)
 out_media_vol = min(int(s_require3_result.Item2[1]), 300)
-new_media_vol = min(int(s_require3_result.Item2[2]), 300)
-inoc_vol = min(int(s_require3_result.Item2[3]), 175)
-aspirate_z_offset = min(float(s_require3_result.Item2[4]), 10)
-aspirate_speed = min(int(s_require3_result.Item2[5]), 100)
+pbs_wash_cycle = min(int(s_require3_result.Item2[2]), 10)
+new_media_vol = min(int(s_require3_result.Item2[3]), 300)
+inoc_vol = min(int(s_require3_result.Item2[4]), 175)
+aspirate_z_offset = min(float(s_require3_result.Item2[5]), 10)
+aspirate_speed = min(int(s_require3_result.Item2[6]), 100)
 # Update map based on chosen plate_type
 
 update_feature(
@@ -191,7 +198,7 @@ update_feature(
             True,
             "Magnet",
         ),
-        ("POS19", "SuzhouChenxuCAR-190NS", "WASTE", "", False, True, ""),
+        ("POS19", "VDeepwellPlateDN07350501", "WASTE", "", False, True, ""),
         ("POS20", "", "Teleshake", "", False, True, "Shaker"),
         (
             "POS21",
@@ -236,7 +243,7 @@ binding_map(
         "POS16": [plate_type, None, None],
         "POS17": ["TipGEBAF250A", None, None],
         "POS18": ["SuzhouChenxuCAR-190NS", None, None],
-        "POS19": ["SuzhouChenxuCAR-190NS", None, None],
+        "POS19": ["VDeepwellPlateDN07350501", None, None],
         "POS20": [None, None, "shake"],
         "POS21": ["SuzhouChenxuCAR-190NS", None, None],
         "POS22": ["TipGEBAF250A", None, None],
