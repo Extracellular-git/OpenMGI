@@ -149,6 +149,16 @@ s_require3_result = require3(
         {"Volume to inoculate": ["20", "Integer between 0-175"]},
         {"Aspiration height offset": ["0.4", "mm of height offset, between 0-10"]},
         {"Aspiration speed": ["60", "Rate of aspiration, 0-100"]},
+        {
+            "Perform removal of old media": [
+                "1",
+                "Whether to remove old media, 0 = no, 1 = yes",
+            ]
+        },
+        {"Perform PBS wash": ["1", "Whether to do PBS wash, 0 = no, 1 = yes"]},
+        {"Perform TrypLE wash": ["1", "Whether to do TrypLE wash, 0 = no, 1 = yes"]},
+        {"Perform TrypLE wash": ["1", "Whether to do TrypLE wash, 0 = no, 1 = yes"]},
+        {"Perform inoculation": ["1", "Whether to do inoculation, 0 = no, 1 = yes"]},
     ],
 )
 # indexes the provided user inputs and converts data type as appropriate
@@ -160,6 +170,11 @@ new_media_vol = min(int(s_require3_result.Item2[3]), 300)
 inoc_vol = min(int(s_require3_result.Item2[4]), 175)
 aspirate_z_offset = min(float(s_require3_result.Item2[5]), 10)
 aspirate_speed = min(int(s_require3_result.Item2[6]), 100)
+old_media_bool = bool(min(int(s_require3_result.Item2[7]), 1))
+pbs_plate_wash_bool = bool(min(int(s_require3_result.Item2[8]), 1))
+tryple_wash_bool = bool(min(int(s_require3_result.Item2[9]), 1))
+new_media_bool = bool(min(int(s_require3_result.Item2[10]), 1))
+inoculation_bool = bool(min(int(s_require3_result.Item2[11]), 1))
 # Update map based on chosen plate_type
 
 update_feature(
@@ -259,113 +274,269 @@ old_plates_list = ["POS13", "POS14", "POS15", "POS16"][0:number_plates]
 # start workflow
 home()
 lock()
-
-report("Removal of old media", "Start")
-load_tips({"Module": old_media_tips, "Tips": 96, "Col": 1, "Row": 1})
-for plate_idx, plate_pos in enumerate(old_plates_list):
-    report("Removal of old media", "Plate " + str(plate_idx + 1))
-    if out_media_vol >= 150:
+if old_media_bool:
+    report("Removal of old media", "Start")
+    load_tips({"Module": old_media_tips, "Tips": 96, "Col": 1, "Row": 1})
+    for plate_idx, plate_pos in enumerate(old_plates_list):
+        report("Removal of old media", "Plate " + str(plate_idx + 1))
+        if out_media_vol >= 150:
+            repeat = 2
+        else:
+            repeat = 1
+        for idx in range(repeat):
+            aspirate(
+                {
+                    "Module": plate_pos,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": out_media_vol / repeat,
+                    "BottomOffsetOfZ": aspirate_z_offset,
+                    "AspirateRateOfP": aspirate_speed,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+            empty(
+                {
+                    "Module": waste,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "BottomOffsetOfZ": waste_height_offset,
+                    "DispenseRateOfP": 100,
+                    "DelySeconds": 0,
+                    "IfTipTouch": True,
+                    "TipTouchHeight": waste_height_offset,
+                    "TipTouchOffsetOfX": waste_touch_offset,
+                    "SecondRouteRate": 35,
+                }
+            )
+        # if we are on only plate, do not wash (no need)
+        if number_plates != 1:
+            report("Removal of old media", "PBS wash tips")
+            mix(
+                {
+                    "Module": pbs_tip_wash,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "SubMixLoopCounts": 3,
+                    "MixLoopVolume": 100,
+                    "BottomOffsetOfZ": 5,
+                    "MixLoopAspirateRate": 70,
+                    "MixOffsetOfZInLoop": 5,
+                    "MixLoopDispenseRate": 70,
+                    "MixOffsetOfZAfterLoop": 5,
+                    "DispenseRateAfterSubmixLoop": 70,
+                    "PreAirVolume": 0,
+                    "SubMixLoopCompletedDely": 0,
+                    "SecondRouteRate": 35,
+                    "IfTipTouch": False,
+                    "MixLoopAspirateDely": 0,
+                    "MixLoopDispenseDely": 0,
+                    "DelyAfterSubmixLoopCompleted": 0,
+                }
+            )
+    unload_tips({"Module": old_media_tips, "Tips": 96, "Col": 1, "Row": 1})
+    report("Removal of old media", "End")
+if pbs_plate_wash_bool:
+    report("PBS plate wash", "Start")
+    load_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
+    if number_plates >= 4:
         repeat = 2
+        old_plates_list_wash = [old_plates_list[0:2], old_plates_list[2:4]]
     else:
         repeat = 1
-    for idx in range(repeat):
-        aspirate(
+        old_plates_list_wash = [old_plates_list]
+    pbs_aspirate_vol = 50 * number_plates / repeat
+    for cycle in range(pbs_wash_cycle):
+        report("PBS plate wash Cycle " + str(cycle + 1), "Start")
+        for plate_group in range(repeat):
+            report("PBS plate wash Cycle " + str(cycle + 1), "Aspirate PBS")
+            aspirate(
+                {
+                    "Module": pbs_plate_wash,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": pbs_aspirate_vol,
+                    "BottomOffsetOfZ": 5,
+                    "AspirateRateOfP": 100,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "SecondRouteRate": 35,
+                }
+            )
+            for plate in old_plates_list_wash[plate_group]:
+                report(
+                    "PBS plate wash Cycle " + str(cycle + 1),
+                    "Dispense PBS into plate "
+                    + str(plate)
+                    + ", Plate group "
+                    + str(plate_group + 1),
+                )
+                dispense(
+                    {
+                        "Module": plate,
+                        "Tips": 96,
+                        "Col": 1,
+                        "Row": 1,
+                        "DispenseVolume": 50,
+                        "BottomOffsetOfZ": 10,
+                        "DispenseRateOfP": 60,
+                        "DelySeconds": 0,
+                        "IfTipTouch": True,
+                        "TipTouchHeight": 10,
+                        "TipTouchOffsetOfX": 3,
+                        "SecondRouteRate": 35,
+                    }
+                )
+        unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
+        for plate in old_plates_list:
+            report(
+                "PBS plate wash Cycle " + str(cycle + 1), "Shake plate " + str(plate)
+            )
+            mvkit(plate, shake)
+            shake_on(200, 2)
+            dely(10)
+            shake_off()
+            mvkit(shake, plate)
+        load_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
+        for plate in old_plates_list:
+            report(
+                "PBS plate wash Cycle " + str(cycle + 1), "Aspirate PBS plate " + plate
+            )
+            aspirate(
+                {
+                    "Module": plate,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": 60,
+                    "BottomOffsetOfZ": aspirate_z_offset,
+                    "AspirateRateOfP": aspirate_speed,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+            empty(
+                {
+                    "Module": waste,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "BottomOffsetOfZ": waste_height_offset,
+                    "DispenseRateOfP": 100,
+                    "DelySeconds": 0,
+                    "IfTipTouch": True,
+                    "TipTouchHeight": waste_height_offset,
+                    "TipTouchOffsetOfX": waste_touch_offset,
+                    "SecondRouteRate": 35,
+                }
+            )
+    unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
+    report("PBS plate wash", "End")
+
+if tryple_wash_bool:
+    report("TrypLE", "Start")
+    load_tips({"Module": tryple_tips, "Tips": 96, "Col": 1, "Row": 1})
+    report("TrypLE", "Aspirate TrypLE")
+    aspirate(
+        {
+            "Module": tryple_res,
+            "Tips": 96,
+            "Col": 1,
+            "Row": 1,
+            "AspirateVolume": 20 * number_plates + 10,
+            "BottomOffsetOfZ": 1,
+            "AspirateRateOfP": aspirate_speed,
+            "PreAirVolume": 0,
+            "PostAirVolume": 0,
+            "DelySeconds": 0,
+            "IfTipTouch": False,
+            "TipTouchHeight": 10,
+            "TipTouchOffsetOfX": 3,
+            "SecondRouteRate": 35,
+        }
+    )
+    for plate in old_plates_list:
+        report("TrypLE", "Dispense TrypLE to " + str(plate))
+        dispense(
             {
-                "Module": plate_pos,
+                "Module": plate,
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "AspirateVolume": out_media_vol / repeat,
-                "BottomOffsetOfZ": aspirate_z_offset,
-                "AspirateRateOfP": aspirate_speed,
-                "PreAirVolume": 0,
-                "PostAirVolume": 0,
+                "DispenseVolume": 20,
+                "BottomOffsetOfZ": 8,
+                "DispenseRateOfP": 60,
                 "DelySeconds": 0,
-                "IfTipTouch": False,
-                "TipTouchHeight": 10,
+                "IfTipTouch": True,
+                "TipTouchHeight": 8,
                 "TipTouchOffsetOfX": 3,
                 "SecondRouteRate": 35,
             }
         )
-        empty(
-            {
-                "Module": waste,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "BottomOffsetOfZ": waste_height_offset,
-                "DispenseRateOfP": 100,
-                "DelySeconds": 0,
-                "IfTipTouch": True,
-                "TipTouchHeight": waste_height_offset,
-                "TipTouchOffsetOfX": waste_touch_offset,
-                "SecondRouteRate": 35,
-            }
-        )
-    # if we are on only plate, do not wash (no need)
-    if number_plates != 1:
-        report("Removal of old media", "PBS wash tips")
-        mix(
-            {
-                "Module": pbs_tip_wash,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "SubMixLoopCounts": 3,
-                "MixLoopVolume": 100,
-                "BottomOffsetOfZ": 5,
-                "MixLoopAspirateRate": 70,
-                "MixOffsetOfZInLoop": 5,
-                "MixLoopDispenseRate": 70,
-                "MixOffsetOfZAfterLoop": 5,
-                "DispenseRateAfterSubmixLoop": 70,
-                "PreAirVolume": 0,
-                "SubMixLoopCompletedDely": 0,
-                "SecondRouteRate": 35,
-                "IfTipTouch": False,
-                "MixLoopAspirateDely": 0,
-                "MixLoopDispenseDely": 0,
-                "DelyAfterSubmixLoopCompleted": 0,
-            }
-        )
-unload_tips({"Module": old_media_tips, "Tips": 96, "Col": 1, "Row": 1})
-report("Removal of old media", "End")
-report("PBS plate wash", "Start")
-load_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
-if number_plates >= 4:
-    repeat = 2
-    old_plates_list_wash = [old_plates_list[0:2], old_plates_list[2:4]]
-else:
-    repeat = 1
-    old_plates_list_wash = [old_plates_list]
-pbs_aspirate_vol = 50 * number_plates / repeat
-for cycle in range(pbs_wash_cycle):
-    report("PBS plate wash Cycle " + str(cycle + 1), "Start")
-    for plate_group in range(repeat):
-        report("PBS plate wash Cycle " + str(cycle + 1), "Aspirate PBS")
-        aspirate(
-            {
-                "Module": pbs_plate_wash,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "AspirateVolume": pbs_aspirate_vol,
-                "BottomOffsetOfZ": 5,
-                "AspirateRateOfP": 100,
-                "PreAirVolume": 0,
-                "PostAirVolume": 0,
-                "DelySeconds": 0,
-                "IfTipTouch": False,
-                "SecondRouteRate": 35,
-            }
-        )
-        for plate in old_plates_list_wash[plate_group]:
-            report(
-                "PBS plate wash Cycle " + str(cycle + 1),
-                "Dispense PBS into plate "
-                + str(plate)
-                + ", Plate group "
-                + str(plate_group + 1),
+    empty(
+        {
+            "Module": waste,
+            "Tips": 96,
+            "Col": 1,
+            "Row": 1,
+            "BottomOffsetOfZ": waste_height_offset,
+            "DispenseRateOfP": 100,
+            "DelySeconds": 0,
+            "IfTipTouch": True,
+            "TipTouchHeight": waste_height_offset,
+            "TipTouchOffsetOfX": waste_touch_offset,
+            "SecondRouteRate": 35,
+        }
+    )
+    unload_tips({"Module": tryple_tips, "Tips": 96, "Col": 1, "Row": 1})
+    report("TrypLE", "Incubation")
+    unlock()
+    dialog(
+        "Please remove plates in positions: "
+        + " ".join(old_plates_list)
+        + ". And incubate. The MGI will prepare the media in the new plates during incubation. Press Continue when you have taken out the old plates and closed the door."
+    )
+    lock()
+
+if new_media_bool:
+    for num, plate in enumerate(new_plates_list):
+        report("Fresh media loading", "Plate " + str(num + 1))
+        load_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
+        for idx in range(2):
+            aspirate(
+                {
+                    "Module": new_media_res,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": (new_media_vol / 2) + 10,
+                    "BottomOffsetOfZ": 1,
+                    "AspirateRateOfP": aspirate_speed,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
             )
             dispense(
                 {
@@ -373,9 +544,58 @@ for cycle in range(pbs_wash_cycle):
                     "Tips": 96,
                     "Col": 1,
                     "Row": 1,
-                    "DispenseVolume": 50,
+                    "DispenseVolume": new_media_vol / 2,
+                    "BottomOffsetOfZ": 1,
+                    "DispenseRateOfP": aspirate_speed,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+        unload_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
+    report("Fresh media loading", "End")
+
+dialog(
+    "Loading of new media into new plates complete. When incubation is done, please replace old plates and close door."
+)
+if inoculation_bool:
+    report("Inoculation", "Start")
+    for num, plate in enumerate(old_plates_list):
+        report("Inoculation", "Adding fresh media to old Plate " + str(num + 1))
+        load_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
+        for idx in range(2):
+            aspirate(
+                {
+                    "Module": new_media_res,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": (new_media_vol / 2),
+                    "BottomOffsetOfZ": 1,
+                    "AspirateRateOfP": aspirate_speed,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+            empty(
+                {
+                    "Module": plate,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
                     "BottomOffsetOfZ": 10,
-                    "DispenseRateOfP": 60,
+                    "DispenseRateOfP": aspirate_speed,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
                     "DelySeconds": 0,
                     "IfTipTouch": True,
                     "TipTouchHeight": 10,
@@ -383,136 +603,38 @@ for cycle in range(pbs_wash_cycle):
                     "SecondRouteRate": 35,
                 }
             )
-    unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
-    for plate in old_plates_list:
-        report("PBS plate wash Cycle " + str(cycle + 1), "Shake plate " + str(plate))
-        mvkit(plate, shake)
-        shake_on(200, 2)
-        dely(10)
-        shake_off()
-        mvkit(shake, plate)
-    load_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
-    for plate in old_plates_list:
-        report("PBS plate wash Cycle " + str(cycle + 1), "Aspirate PBS plate " + plate)
+        report("Inoculation", "Mixing plate " + str(num + 1))
+        mix(
+            {
+                "Module": plate,
+                "Tips": 96,
+                "Col": 1,
+                "Row": 1,
+                "SubMixLoopCounts": 3,
+                "MixLoopVolume": 80,
+                "BottomOffsetOfZ": 3,
+                "MixLoopAspirateRate": aspirate_speed,
+                "MixOffsetOfZInLoop": 3,
+                "MixLoopDispenseRate": 100,
+                "MixOffsetOfZAfterLoop": 3,
+                "DispenseRateAfterSubmixLoop": 100,
+                "PreAirVolume": 0,
+                "SubMixLoopCompletedDely": 0,
+                "SecondRouteRate": 10,
+                "IfTipTouch": False,
+                "MixLoopAspirateDely": 0,
+                "MixLoopDispenseDely": 0,
+                "DelyAfterSubmixLoopCompleted": 0,
+            }
+        )
+        report("Inoculation", "Plate " + str(num + 1))
         aspirate(
             {
                 "Module": plate,
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "AspirateVolume": 60,
-                "BottomOffsetOfZ": aspirate_z_offset,
-                "AspirateRateOfP": aspirate_speed,
-                "PreAirVolume": 0,
-                "PostAirVolume": 0,
-                "DelySeconds": 0,
-                "IfTipTouch": False,
-                "TipTouchHeight": 10,
-                "TipTouchOffsetOfX": 3,
-                "SecondRouteRate": 35,
-            }
-        )
-        empty(
-            {
-                "Module": waste,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "BottomOffsetOfZ": waste_height_offset,
-                "DispenseRateOfP": 100,
-                "DelySeconds": 0,
-                "IfTipTouch": True,
-                "TipTouchHeight": waste_height_offset,
-                "TipTouchOffsetOfX": waste_touch_offset,
-                "SecondRouteRate": 35,
-            }
-        )
-unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
-report("PBS plate wash", "End")
-report("TrypLE", "Start")
-load_tips({"Module": tryple_tips, "Tips": 96, "Col": 1, "Row": 1})
-report("TrypLE", "Aspirate TrypLE")
-aspirate(
-    {
-        "Module": tryple_res,
-        "Tips": 96,
-        "Col": 1,
-        "Row": 1,
-        "AspirateVolume": 20 * number_plates + 10,
-        "BottomOffsetOfZ": 1,
-        "AspirateRateOfP": aspirate_speed,
-        "PreAirVolume": 0,
-        "PostAirVolume": 0,
-        "DelySeconds": 0,
-        "IfTipTouch": False,
-        "TipTouchHeight": 10,
-        "TipTouchOffsetOfX": 3,
-        "SecondRouteRate": 35,
-    }
-)
-for plate in old_plates_list:
-    report("TrypLE", "Dispense TrypLE to " + str(plate))
-    dispense(
-        {
-            "Module": plate,
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "DispenseVolume": 20,
-            "BottomOffsetOfZ": 8,
-            "DispenseRateOfP": 60,
-            "DelySeconds": 0,
-            "IfTipTouch": True,
-            "TipTouchHeight": 8,
-            "TipTouchOffsetOfX": 3,
-            "SecondRouteRate": 35,
-        }
-    )
-empty(
-    {
-        "Module": waste,
-        "Tips": 96,
-        "Col": 1,
-        "Row": 1,
-        "BottomOffsetOfZ": waste_height_offset,
-        "DispenseRateOfP": 100,
-        "DelySeconds": 0,
-        "IfTipTouch": True,
-        "TipTouchHeight": waste_height_offset,
-        "TipTouchOffsetOfX": waste_touch_offset,
-        "SecondRouteRate": 35,
-    }
-)
-unload_tips({"Module": tryple_tips, "Tips": 96, "Col": 1, "Row": 1})
-report("TrypLE", "Incubation")
-unlock()
-dialog(
-    "Please remove plates in positions: "
-    + " ".join(old_plates_list)
-    + ". And incubate for 5 minutes. The MGI will prepare the media in the new plates during incubation. Press Continue when you have taken out the old plates and closed the door."
-)
-lock()
-
-
-def incubation_timer():
-    dely(300)
-    unlock()
-    dialog("5 minutes elapsed, Please replace old plates and close door.")
-    lock()
-
-
-timer = parallel_block(incubation_timer)
-for num, plate in enumerate(new_plates_list):
-    report("Fresh media loading", "Plate " + str(num + 1))
-    load_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
-    for idx in range(2):
-        aspirate(
-            {
-                "Module": new_media_res,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "AspirateVolume": (new_media_vol / 2) + 10,
+                "AspirateVolume": inoc_vol + 10,
                 "BottomOffsetOfZ": 1,
                 "AspirateRateOfP": aspirate_speed,
                 "PreAirVolume": 0,
@@ -526,12 +648,12 @@ for num, plate in enumerate(new_plates_list):
         )
         dispense(
             {
-                "Module": plate,
+                "Module": new_plates_list[num],
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "DispenseVolume": new_media_vol / 2,
-                "BottomOffsetOfZ": 1,
+                "DispenseVolume": inoc_vol,
+                "BottomOffsetOfZ": 2,
                 "DispenseRateOfP": aspirate_speed,
                 "PreAirVolume": 0,
                 "PostAirVolume": 0,
@@ -542,112 +664,8 @@ for num, plate in enumerate(new_plates_list):
                 "SecondRouteRate": 35,
             }
         )
-    unload_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
-report("Fresh media loading", "End")
-timer.Wait()
-report("Inoculation", "Start")
-for num, plate in enumerate(old_plates_list):
-    report("Inoculation", "Adding fresh media to old Plate " + str(num + 1))
-    load_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
-    for idx in range(2):
-        aspirate(
-            {
-                "Module": new_media_res,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "AspirateVolume": (new_media_vol / 2),
-                "BottomOffsetOfZ": 1,
-                "AspirateRateOfP": aspirate_speed,
-                "PreAirVolume": 0,
-                "PostAirVolume": 0,
-                "DelySeconds": 0,
-                "IfTipTouch": False,
-                "TipTouchHeight": 10,
-                "TipTouchOffsetOfX": 3,
-                "SecondRouteRate": 35,
-            }
-        )
-        empty(
-            {
-                "Module": plate,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "BottomOffsetOfZ": 10,
-                "DispenseRateOfP": aspirate_speed,
-                "PreAirVolume": 0,
-                "PostAirVolume": 0,
-                "DelySeconds": 0,
-                "IfTipTouch": True,
-                "TipTouchHeight": 10,
-                "TipTouchOffsetOfX": 3,
-                "SecondRouteRate": 35,
-            }
-        )
-    report("Inoculation", "Mixing plate " + str(num + 1))
-    mix(
-        {
-            "Module": plate,
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "SubMixLoopCounts": 3,
-            "MixLoopVolume": 80,
-            "BottomOffsetOfZ": 3,
-            "MixLoopAspirateRate": aspirate_speed,
-            "MixOffsetOfZInLoop": 3,
-            "MixLoopDispenseRate": 100,
-            "MixOffsetOfZAfterLoop": 3,
-            "DispenseRateAfterSubmixLoop": 100,
-            "PreAirVolume": 0,
-            "SubMixLoopCompletedDely": 0,
-            "SecondRouteRate": 10,
-            "IfTipTouch": False,
-            "MixLoopAspirateDely": 0,
-            "MixLoopDispenseDely": 0,
-            "DelyAfterSubmixLoopCompleted": 0,
-        }
-    )
-    report("Inoculation", "Plate " + str(num + 1))
-    aspirate(
-        {
-            "Module": plate,
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "AspirateVolume": inoc_vol + 10,
-            "BottomOffsetOfZ": 1,
-            "AspirateRateOfP": aspirate_speed,
-            "PreAirVolume": 0,
-            "PostAirVolume": 0,
-            "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 10,
-            "TipTouchOffsetOfX": 3,
-            "SecondRouteRate": 35,
-        }
-    )
-    dispense(
-        {
-            "Module": new_plates_list[num],
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "DispenseVolume": inoc_vol,
-            "BottomOffsetOfZ": 2,
-            "DispenseRateOfP": aspirate_speed,
-            "PreAirVolume": 0,
-            "PostAirVolume": 0,
-            "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 10,
-            "TipTouchOffsetOfX": 3,
-            "SecondRouteRate": 35,
-        }
-    )
-    unload_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
-report("Inoculation", "End")
+        unload_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
+    report("Inoculation", "End")
 home()
 unlock()
 dialog("Passage completed, please take new plates and give them a little shake.")
