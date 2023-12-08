@@ -1,0 +1,90 @@
+remove all media 0.4 60 110*2
+add 50ul of pbs
+shake for 10s at 150rpm
+take up 50ul pbs
+
+add 50ul of pbs
+shake for 10s at 150rpm
+take up 50ul pbs
+
+add 20 ul of tryple
+incubate 5min
+
+add 180ul of fresh media to new plate
+same tips
+add 180 ul of media 0.4 60 90*2
+mix *3
+take out 20 ul
+
+put into new plate
+
+shake at low speed 150rpm
+
+
+---- potentially add fresh media first to new plate and then add the 20ul of cells afterwards.
+
+for now 1 plate
+0.4 zoffset with 60 speed is good
+
+try reverse pipetting monday
+
+--------
+
+use magrack and heatblock as normal positions (it knows heatblock height) heatblock as pbs wash
+use waste as liquid waste
+minimise pipette usage
+pbs wash inbetween old media pickup, do them all with one tips
+can we get 4*plates for exchange
+check reverse pippette accuracy
+GRIP TIGHTER ON PICKUP from shaker - done use 9 and 2.5 for last two items of kit.json
+
+-------------
+run test
+little bit slow on the waste dispense - done
+tip wash is a bit slow too - done
+remove second route rates?
+CHECK shaking on PBS wash plates - seems ok?
+it doest seem to do plate wash of first two old plates?  - TODO confirm
+takes out from top two ok (and bottom two)
+it unloads tips before start of second pbs wash cycle! - should be fixed
+tip shake on final empty of tryple - done
+optimise mix, look at last one. - done
+
+
+---------
+runtime for 4 plates:
+take old media out: 4 min
+finish plate wash with shaking and removing pbs cycle 1: 13 min
+second cycle: 21:30
+tryple addition: 23;30
+adding fresh media to plates: 28:00
+inoculation complete: 36:00
+-----------
+for pbs wash, reduce vol so can do it all in one aspiration (for 4 plates)
+do more violent shake to get rid of droplets after throwing away old media
+it definitely does not do first cycle of pbs plate wash right, it just puts it all into plate 3 , then dispenses nothing in plate 4. it takes it out fine of the top two after shaking. does the same in cycle 2. - done
+inoc tips keep quite a lot of fresh media in the tips during the loading of it into new plates. this may be because of using dodgy reservoir and height for testing.
+make sure when taking fresh media with inoc tips and dropping it in old plates, it does not touch the liquid. - done changed to 10
+----------
+second runtime for 4 plates:
+take old media out: 4 min
+finish plate wash with shaking and removing pbs cycle 1: 13 min
+second cycle: 21 min
+tryple addition:
+adding fresh media to plates:
+inoculation complete: 36 min
+---------------
+waste into deepwell plate: height 40, offset 2.8, doesn't touch the side, only droplet does.
+---------------
+change to 150 per old media operation
+add boolean for each section
+add config for pbs was
+make shaking for pbs plate wash only shakle on last cycle. check reporting for this too.
+put tryple back
+check pbs is NOT put into waste - unnecessary
+do popup of starting new media immediately after loading new media into new plates is done - no timer.
+-------------------
+media exchange:
+supplements
+supp1: plates: 1, 3, 5
+etc.
