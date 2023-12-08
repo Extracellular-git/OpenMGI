@@ -76,13 +76,13 @@ inoculation complete: 36 min
 ---------------
 waste into deepwell plate: height 40, offset 2.8, doesn't touch the side, only droplet does.
 ---------------
-change to 150 per old media operation
-add boolean for each section
-add config for pbs was
-make shaking for pbs plate wash only shakle on last cycle. check reporting for this too.
-put tryple back
-check pbs is NOT put into waste - unnecessary
-do popup of starting new media immediately after loading new media into new plates is done - no timer.
+change to 150 per old media operation - done
+add boolean for each section - done
+add config for pbs was - done
+make shaking for pbs plate wash only shakle on last cycle. check reporting for this too. - done
+put tryple back - done
+check pbs is NOT put into waste - unnecessary - unclear
+do popup of starting new media immediately after loading new media into new plates is done - no timer. - done
 -------------------
 media exchange:
 supplements

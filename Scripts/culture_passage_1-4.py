@@ -399,17 +399,20 @@ if pbs_plate_wash_bool:
                         "SecondRouteRate": 35,
                     }
                 )
-        unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
-        for plate in old_plates_list:
-            report(
-                "PBS plate wash Cycle " + str(cycle + 1), "Shake plate " + str(plate)
-            )
-            mvkit(plate, shake)
-            shake_on(200, 2)
-            dely(10)
-            shake_off()
-            mvkit(shake, plate)
-        load_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
+        if cycle + 1 == pbs_wash_cycle:
+            # If it is last cycle, then do shaking.
+            unload_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
+            for plate in old_plates_list:
+                report(
+                    "PBS plate wash Cycle " + str(cycle + 1),
+                    "Shake plate " + str(plate),
+                )
+                mvkit(plate, shake)
+                shake_on(200, 2)
+                dely(10)
+                shake_off()
+                mvkit(shake, plate)
+            load_tips({"Module": pbs_plate_wash_tips, "Tips": 96, "Col": 1, "Row": 1})
         for plate in old_plates_list:
             report(
                 "PBS plate wash Cycle " + str(cycle + 1), "Aspirate PBS plate " + plate
@@ -484,7 +487,7 @@ if tryple_wash_bool:
                 "BottomOffsetOfZ": 8,
                 "DispenseRateOfP": 60,
                 "DelySeconds": 0,
-                "IfTipTouch": True,
+                "IfTipTouch": False,
                 "TipTouchHeight": 8,
                 "TipTouchOffsetOfX": 3,
                 "SecondRouteRate": 35,
@@ -492,16 +495,16 @@ if tryple_wash_bool:
         )
     empty(
         {
-            "Module": waste,
+            "Module": tryple_res,
             "Tips": 96,
             "Col": 1,
             "Row": 1,
-            "BottomOffsetOfZ": waste_height_offset,
-            "DispenseRateOfP": 100,
+            "BottomOffsetOfZ": 1,
+            "DispenseRateOfP": 70,
             "DelySeconds": 0,
-            "IfTipTouch": True,
-            "TipTouchHeight": waste_height_offset,
-            "TipTouchOffsetOfX": waste_touch_offset,
+            "IfTipTouch": False,
+            "TipTouchHeight": 8,
+            "TipTouchOffsetOfX": 3,
             "SecondRouteRate": 35,
         }
     )
