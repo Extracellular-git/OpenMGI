@@ -264,7 +264,7 @@ report("Removal of old media", "Start")
 load_tips({"Module": old_media_tips, "Tips": 96, "Col": 1, "Row": 1})
 for plate_idx, plate_pos in enumerate(old_plates_list):
     report("Removal of old media", "Plate " + str(plate_idx + 1))
-    if out_media_vol >= 175:
+    if out_media_vol >= 150:
         repeat = 2
     else:
         repeat = 1
