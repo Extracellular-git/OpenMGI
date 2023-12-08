@@ -88,3 +88,9 @@ media exchange:
 supplements
 supp1: plates: 1, 3, 5
 etc.
+
+use blocks
+each block_list
+go from line 318
+add washes inside block, and also adding of new media, then after all blocks add the supplements.
+
