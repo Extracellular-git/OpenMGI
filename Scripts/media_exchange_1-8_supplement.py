@@ -140,6 +140,8 @@ new_media_tips = "POS7"
 new_media_res = "POS6"
 old_media_res = "POS5"
 pbs_tip_wash_list = ["POS4", "POS8"]
+supplement_tips_list = ["POS21", "POS22", "POS23", "POS24"]
+supplement_res_list = ["POS17", "POS18", "POS19", "POS20"]
 # defining the default user inputed variables
 number_plates = 1
 in_media_vol = 180
@@ -171,6 +173,20 @@ supplement_additions = [
     [int(num) for num in s_require3_result.Item2[6].split(",")],
     [int(num) for num in s_require3_result.Item2[7].split(",")],
     ]
+# parse supplement additions to plate positions
+plate_pos_dict = {
+    1:"POS9",
+    2:"POS10",
+    3:"POS11",
+    4:"POS12",
+    5:"POS13",
+    6:"POS14",
+    7:"POS15",
+    8:"POS16",
+    }
+for idx, supp_sublist in enumerate(supplement_additions):
+    supplement_additions[idx] = [plate_pos_dict[x] for x in supp_sublist]
+
 
 update_feature(
     [
@@ -318,6 +334,7 @@ else:
 for block_idx, block in enumerate(block_list):
     report("Plate block " + str(block_idx + 1), "Start")
     load_tips({"Module": tips_list[block_idx], "Tips": 96, "Col": 1, "Row": 1})
+    # Media removal and tip wash loop
     for idx, plate in enumerate(block):
         if out_media_vol > 175:
             # have to do more than one pipetting motion
@@ -384,57 +401,102 @@ for block_idx, block in enumerate(block_list):
                         "SecondRouteRate": 35,
                     }
                 )
-    report("Removal of old media", "End")
-report("Addition of new media", "Start")
-load_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
-if in_media_vol > 175:
-    repeat = 2
-else:
-    repeat = 1
-for idx, plate_pos in enumerate(use_plates_list):
-    for cycle in range(repeat):
-        report(
-            "Addition of new media",
-            "Aspirating new media for plate "
-            + str(idx + 1)
-            + ", cycle: "
-            + str(cycle + 1),
-        )
-        # Load fresh media, use reverse pipetting
-        aspirate(
+        report("Removal of old media", "Tip wash")
+        if number_plates != 1:
+            # Don't mix if there is only one plate - no need
+            for wash_res in pbs_tip_wash_list:
+                mix(
+                    {
+                        "Module": wash_res,
+                        "Tips": 96,
+                        "Col": 1,
+                        "Row": 1,
+                        "SubMixLoopCounts": 5,
+                        "MixLoopVolume": 150,
+                        "BottomOffsetOfZ": 5,
+                        "MixLoopAspirateRate": 70,
+                        "MixOffsetOfZInLoop": 5,
+                        "MixLoopDispenseRate": 70,
+                        "MixOffsetOfZAfterLoop": 5,
+                        "DispenseRateAfterSubmixLoop": 70,
+                        "PreAirVolume": 0,
+                        "SubMixLoopCompletedDely": 0,
+                        "SecondRouteRate": 35,
+                        "IfTipTouch": False,
+                        "MixLoopAspirateDely": 0,
+                        "MixLoopDispenseDely": 0,
+                        "DelyAfterSubmixLoopCompleted": 0,
+                    }
+                )
+
+    # Fresh media addition inside each block-loop, so the cells don't dry out.
+    report("Addition of new media", "Start")
+    load_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
+    if in_media_vol > 175:
+        repeat = 2
+    else:
+        repeat = 1
+    for idx, plate in enumerate(block):
+        for cycle in range(repeat):
+            report(
+                "Addition of new media",
+                "Aspirating new media for plate "
+                + str(idx + 1)
+                + ", cycle: "
+                + str(cycle + 1),
+            )
+            # Load fresh media, use reverse pipetting
+            aspirate(
+                {
+                    "Module": new_media_res,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": (in_media_vol / repeat) + 10,
+                    "BottomOffsetOfZ": 1,
+                    "AspirateRateOfP": 60,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+            # Dispense fresh media into plate. do not touch the bottom, and do it slowly.
+            report(
+                "Addition of new media",
+                "Dispensing new media for plate "
+                + str(idx + 1)
+                + ", cycle: "
+                + str(cycle + 1),
+            )
+            dispense(
+                {
+                    "Module": plate,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "DispenseVolume": in_media_vol / repeat,
+                    "BottomOffsetOfZ": 10,
+                    "DispenseRateOfP": 50,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+        # empty excess for reverse pipette into new media
+        report("Addition of new media", "Emptying excess")
+        empty(
             {
                 "Module": new_media_res,
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "AspirateVolume": (in_media_vol / repeat) + 10,
                 "BottomOffsetOfZ": 1,
-                "AspirateRateOfP": 60,
-                "PreAirVolume": 0,
-                "PostAirVolume": 0,
-                "DelySeconds": 0,
-                "IfTipTouch": False,
-                "TipTouchHeight": 10,
-                "TipTouchOffsetOfX": 3,
-                "SecondRouteRate": 35,
-            }
-        )
-        # Dispense fresh media into plate. do not touch the bottom, and do it slowly.
-        report(
-            "Addition of new media",
-            "Dispensing new media for plate "
-            + str(idx + 1)
-            + ", cycle: "
-            + str(cycle + 1),
-        )
-        dispense(
-            {
-                "Module": plate_pos,
-                "Tips": 96,
-                "Col": 1,
-                "Row": 1,
-                "DispenseVolume": in_media_vol / repeat,
-                "BottomOffsetOfZ": 10,
                 "DispenseRateOfP": 50,
                 "DelySeconds": 0,
                 "IfTipTouch": False,
@@ -443,26 +505,36 @@ for idx, plate_pos in enumerate(use_plates_list):
                 "SecondRouteRate": 35,
             }
         )
-    # empty excess for reverse pipette into new media
-    report("Addition of new media", "Emptying excess")
-    empty(
-        {
-            "Module": new_media_res,
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "BottomOffsetOfZ": 1,
-            "DispenseRateOfP": 50,
-            "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 10,
-            "TipTouchOffsetOfX": 3,
-            "SecondRouteRate": 35,
-        }
-    )
-report("Addition of new media", "End")
-unload_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
+    report("Addition of new media", "End")
+    unload_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
 report("Media exchange", "Complete")
+
+# perform supplement addition
+report("Supplement addition", "Start")
+for idx, supp_sublist in enumerate(supplement_additions):
+    if len(supp_sublist) != 0:
+        load_tips({"Module": supplement_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1})
+        for plate in supp_sublist:
+            # aspirate from supplement res list
+            aspirate(
+                {
+                    "Module": plate_pos,
+                    "Tips": 96,
+                    "Col": 1,
+                    "Row": 1,
+                    "AspirateVolume": out_media_vol / repeat,
+                    "BottomOffsetOfZ": aspirate_z_offset,
+                    "AspirateRateOfP": 100,
+                    "PreAirVolume": 0,
+                    "PostAirVolume": 0,
+                    "DelySeconds": 0,
+                    "IfTipTouch": False,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
+                    "SecondRouteRate": 35,
+                }
+            )
+
 home()
 unlock()
 dialog("Media exchange completed.")
