@@ -146,6 +146,7 @@ supplement_res_list = ["POS17", "POS18", "POS19", "POS20"]
 number_plates = 1
 in_media_vol = 180
 aspirate_z_offset = 0.4
+supp_vol = 20
 plate_type = "96_wellplate_flat_bottom"
 # asks the user for the inputs
 s_require3_result = require3(
@@ -505,35 +506,57 @@ for block_idx, block in enumerate(block_list):
                 "SecondRouteRate": 35,
             }
         )
-    report("Addition of new media", "End")
+    report("Addition of new media", "Complete")
     unload_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
 report("Media exchange", "Complete")
 
 # perform supplement addition
 report("Supplement addition", "Start")
-for idx, supp_sublist in enumerate(supplement_additions):
+for idx, supp_sublist in enumerate(use_supplement_additions_list):
     if len(supp_sublist) != 0:
+        report("Supplement addition", "Load tips for S" + str(idx + 1))
         load_tips({"Module": supplement_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1})
+        # Aspirate liquid for all additions from this supplement. add extra 5ul for reverse pipette. with 20ul supp, maximum would be 160ul so we are under the limit. If supp vol is higher, would have to do more transfers.
+        report("Supplement addition", "Load S" + str(idx + 1))
+        aspirate(
+            {
+                "Module": supplement_res_list[idx],
+                "Tips": 96,
+                "Col": 1,
+                "Row": 1,
+                "AspirateVolume": (supp_vol * len(supp_sublist)) + 5,
+                "BottomOffsetOfZ": aspirate_z_offset,
+                "AspirateRateOfP": 60,
+                "PreAirVolume": 0,
+                "PostAirVolume": 0,
+                "DelySeconds": 0,
+                "IfTipTouch": False,
+                "TipTouchHeight": 10,
+                "TipTouchOffsetOfX": 3,
+                "SecondRouteRate": 35,
+            }
+        )
         for plate in supp_sublist:
+            report("Supplement addition", "Dispense S" + str(idx + 1) + " into " + plate)
             # aspirate from supplement res list
-            aspirate(
+            dispense(
                 {
-                    "Module": plate_pos,
+                    "Module": plate,
                     "Tips": 96,
                     "Col": 1,
                     "Row": 1,
-                    "AspirateVolume": out_media_vol / repeat,
-                    "BottomOffsetOfZ": aspirate_z_offset,
-                    "AspirateRateOfP": 100,
-                    "PreAirVolume": 0,
-                    "PostAirVolume": 0,
+                    "DispenseVolume": supp_vol,
+                    "BottomOffsetOfZ": 10,
+                    "DispenseRateOfP": 60,
                     "DelySeconds": 0,
-                    "IfTipTouch": False,
-                    "TipTouchHeight": 10,
-                    "TipTouchOffsetOfX": 3,
+                    "IfTipTouch": True,
+                    "TipTouchHeight": 11,
+                    "TipTouchOffsetOfX": 2,
                     "SecondRouteRate": 35,
                 }
             )
+        report("Supplement addition", "Complete")
+        unload_tips({"Module": supplement_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1})
 
 home()
 unlock()
