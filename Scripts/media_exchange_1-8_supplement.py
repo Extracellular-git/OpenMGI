@@ -321,6 +321,7 @@ for idx in range(0, len(use_plates_list), reuse_count):
 
 # workflow block begins
 lock()
+hoodspeed(1000)
 home()
 # Remove media from each plate in use with new tips each time.
 report("Removal of old media", "Start")
