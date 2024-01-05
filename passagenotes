@@ -94,4 +94,18 @@ each block_list
 go from line 318
 add washes inside block, and also adding of new media, then after all blocks add the supplements.
 
-how much supplement? 20 ul?
+how much supplement? 20 - yes
+
+added hoodspeed - test this. what is the max speed?
+-----------
+tip touch on first dispense after first taking out waste (only does on last) - this is on purpose, it does not empty all liquid on first dispense to stop droplets forming. it does on the last one.
+
+tips crashed into fresh media tips. - fixed
+
+with 4 plates it did a block of 2 first - check logic
+check pos17 in second part - fixed.
+
+check report of plate numers in aspiration phase - they are wrong - fixed
+tip wash takes a while
+
+supplements other than 1 don't seem to go in? - that was just cos amount of supplement plates was not specified.
