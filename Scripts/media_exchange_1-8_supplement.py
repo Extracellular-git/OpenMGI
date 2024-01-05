@@ -64,14 +64,7 @@ def first_feature():
         ("POS14", "96_wellplate_flat_bottom", "Cell plate 6", "", False, True, ""),
         ("POS15", "96_wellplate_flat_bottom", "Cell plate 7", "", False, True, ""),
         ("POS16", "96_wellplate_flat_bottom", "Cell plate 8", "", False, True, ""),
-        (
-            "POS17",
-            "VDeepwellPlateDN07350501",
-            "Supplement 1",
-            False,
-            True,
-            "",
-        ),
+        ("POS17", "VDeepwellPlateDN07350501", "Supplement 1", "", False, True, ""),
         (
             "POS18",
             "VDeepwellPlateDN07350501",
@@ -156,10 +149,30 @@ s_require3_result = require3(
         {"Volume of media to remove": ["200", "Integer between 0-300"]},
         {"Volume of fresh media": ["180", "Integer between 0-300"]},
         {"Number of supplement plates": ["1", "Integer between 0-4"]},
-        {"Supplement 1 goes into which plates?": ["", "Comma-seperated list of integers eg. 1,2,3"]},
-        {"Supplement 2 goes into which plates?": ["", "Comma-seperated list of integers eg. 1,2,3"]},
-        {"Supplement 3 goes into which plates?": ["", "Comma-seperated list of integers eg. 1,2,3"]},
-        {"Supplement 4 goes into which plates?": ["", "Comma-seperated list of integers eg. 1,2,3"]},
+        {
+            "Supplement 1 goes into which plates?": [
+                "",
+                "Comma-seperated list of integers eg. 1,2,3",
+            ]
+        },
+        {
+            "Supplement 2 goes into which plates?": [
+                "",
+                "Comma-seperated list of integers eg. 1,2,3",
+            ]
+        },
+        {
+            "Supplement 3 goes into which plates?": [
+                "",
+                "Comma-seperated list of integers eg. 1,2,3",
+            ]
+        },
+        {
+            "Supplement 4 goes into which plates?": [
+                "",
+                "Comma-seperated list of integers eg. 1,2,3",
+            ]
+        },
     ],
 )
 # indexes the provided user inputs and converts data type as appropriate
@@ -173,18 +186,18 @@ supplement_additions = [
     [int(num) for num in s_require3_result.Item2[5].split(",")],
     [int(num) for num in s_require3_result.Item2[6].split(",")],
     [int(num) for num in s_require3_result.Item2[7].split(",")],
-    ]
+]
 # parse supplement additions to plate positions
 plate_pos_dict = {
-    1:"POS9",
-    2:"POS10",
-    3:"POS11",
-    4:"POS12",
-    5:"POS13",
-    6:"POS14",
-    7:"POS15",
-    8:"POS16",
-    }
+    1: "POS9",
+    2: "POS10",
+    3: "POS11",
+    4: "POS12",
+    5: "POS13",
+    6: "POS14",
+    7: "POS15",
+    8: "POS16",
+}
 for idx, supp_sublist in enumerate(supplement_additions):
     supplement_additions[idx] = [plate_pos_dict[x] for x in supp_sublist]
 
@@ -231,14 +244,7 @@ update_feature(
         ("POS14", plate_type, "Cell plate 6", "", False, True, ""),
         ("POS15", plate_type, "Cell plate 7", "", False, True, ""),
         ("POS16", plate_type, "Cell plate 8", "", False, True, ""),
-        (
-            "POS17",
-            "VDeepwellPlateDN07350501",
-            "Supplement 1",
-            False,
-            True,
-            "",
-        ),
+        ("POS17", "VDeepwellPlateDN07350501", "Supplement 1", "", False, True, ""),
         (
             "POS18",
             "VDeepwellPlateDN07350501",
@@ -271,6 +277,7 @@ update_feature(
         ("POS23", "TipGEBAF250A", "Supplement 3 tips", "", False, True, ""),
         ("POS24", "TipGEBAF250A", "Supplement 4 tips", "", False, True, ""),
     ]
+)
 
 binding_map(
     {
@@ -282,7 +289,7 @@ binding_map(
         "POS6": ["SuzhouChenxuCAR-190NS", None, None],
         "POS7": ["TipGEBAF250A", None, None],
         "POS8": ["SuzhouChenxuCAR-190NS", None, None],
-         "POS9": [plate_type, None, None],
+        "POS9": [plate_type, None, None],
         "POS10": [plate_type, None, None],
         "POS11": [plate_type, None, None],
         "POS12": [plate_type, None, None],
@@ -317,7 +324,7 @@ elif number_plates <= 6:
 else:
     reuse_count = 3
 for idx in range(0, len(use_plates_list), reuse_count):
-   block_list.append(use_plates_list[idx : idx + reuse_count])
+    block_list.append(use_plates_list[idx : idx + reuse_count])
 
 # workflow block begins
 lock()
@@ -337,16 +344,17 @@ for block_idx, block in enumerate(block_list):
     report("Plate block " + str(block_idx + 1), "Start")
     load_tips({"Module": tips_list[block_idx], "Tips": 96, "Col": 1, "Row": 1})
     # Media removal and tip wash loop
-    for idx, plate in enumerate(block):
+    for idx, plate_pos in enumerate(block):
         if out_media_vol > 175:
             # have to do more than one pipetting motion
             repeat = 2
         else:
             repeat = 1
         for cycle in range(repeat):
+            plate_num = (idx + 1) + (block_idx * len(block_list[0]))
             report(
                 "Removal of old media",
-                "Aspirating plate " + str(idx + 1) + ", cycle: " + str(cycle + 1),
+                "Aspirating plate " + str(plate_num) + ", cycle: " + str(cycle + 1),
             )
             aspirate(
                 {
@@ -430,7 +438,7 @@ for block_idx, block in enumerate(block_list):
                         "DelyAfterSubmixLoopCompleted": 0,
                     }
                 )
-
+    unload_tips({"Module": tips_list[block_idx], "Tips": 96, "Col": 1, "Row": 1})
     # Fresh media addition inside each block-loop, so the cells don't dry out.
     report("Addition of new media", "Start")
     load_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
@@ -439,11 +447,12 @@ for block_idx, block in enumerate(block_list):
     else:
         repeat = 1
     for idx, plate in enumerate(block):
+        plate_num = (idx + 1) + (block_idx * len(block_list[0]))
         for cycle in range(repeat):
             report(
                 "Addition of new media",
                 "Aspirating new media for plate "
-                + str(idx + 1)
+                + str(plate_num)
                 + ", cycle: "
                 + str(cycle + 1),
             )
@@ -470,7 +479,7 @@ for block_idx, block in enumerate(block_list):
             report(
                 "Addition of new media",
                 "Dispensing new media for plate "
-                + str(idx + 1)
+                + str(plate_num)
                 + ", cycle: "
                 + str(cycle + 1),
             )
@@ -538,7 +547,9 @@ for idx, supp_sublist in enumerate(use_supplement_additions_list):
             }
         )
         for plate in supp_sublist:
-            report("Supplement addition", "Dispense S" + str(idx + 1) + " into " + plate)
+            report(
+                "Supplement addition", "Dispense S" + str(idx + 1) + " into " + plate
+            )
             # aspirate from supplement res list
             dispense(
                 {
@@ -557,7 +568,9 @@ for idx, supp_sublist in enumerate(use_supplement_additions_list):
                 }
             )
         report("Supplement addition", "Complete")
-        unload_tips({"Module": supplement_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1})
+        unload_tips(
+            {"Module": supplement_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1}
+        )
 
 home()
 unlock()
