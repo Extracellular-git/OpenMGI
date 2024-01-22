@@ -106,7 +106,7 @@ binding_map(
 
 tips = "POS1"
 cell_res = "POS2"
-cell_tips = "POS6"
+cell_plate = "POS6"
 seed_vol = 100
 
 load_tips({"Module": tips, "Tips": 96, "Col": 1, "Row": 1})
