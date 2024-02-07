@@ -32,14 +32,78 @@ def first_feature():
         ("POS6", "TipGEBAF250A", "Inoculation tip 2", "", False, True, ""),
         ("POS7", "TipGEBAF250A", "Inoculation tip 3", "", False, True, ""),
         ("POS8", "TipGEBAF250A", "Inoculation tip 4", "", False, True, ""),
-        ("POS9", "96_wellplate_flat_bottom", "New plate 1", "", False, True, ""),
-        ("POS10", "96_wellplate_flat_bottom", "New plate 2", "", False, True, ""),
-        ("POS11", "96_wellplate_flat_bottom", "New plate 3", "", False, True, ""),
-        ("POS12", "96_wellplate_flat_bottom", "New plate 4", "", False, True, ""),
-        ("POS13", "96_wellplate_flat_bottom", "Old plate 1", "", False, True, ""),
-        ("POS14", "96_wellplate_flat_bottom", "Old plate 2", "", False, True, ""),
-        ("POS15", "96_wellplate_flat_bottom", "Old plate 3", "", False, True, ""),
-        ("POS16", "96_wellplate_flat_bottom", "Old plate 4", "", False, True, ""),
+        (
+            "POS9",
+            "corning_REF3596_96_wp_flat_bottom",
+            "New plate 1",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS10",
+            "corning_REF3596_96_wp_flat_bottom",
+            "New plate 2",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS11",
+            "corning_REF3596_96_wp_flat_bottom",
+            "New plate 3",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS12",
+            "corning_REF3596_96_wp_flat_bottom",
+            "New plate 4",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS13",
+            "corning_REF3596_96_wp_flat_bottom",
+            "Old plate 1",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS14",
+            "corning_REF3596_96_wp_flat_bottom",
+            "Old plate 2",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS15",
+            "corning_REF3596_96_wp_flat_bottom",
+            "Old plate 3",
+            "",
+            False,
+            True,
+            "",
+        ),
+        (
+            "POS16",
+            "corning_REF3596_96_wp_flat_bottom",
+            "Old plate 4",
+            "",
+            False,
+            True,
+            "",
+        ),
         (
             "POS17",
             "TipGEBAF250A",
@@ -93,14 +157,14 @@ binding_map(
         "POS6": ["TipGEBAF250A", None, None],
         "POS7": ["TipGEBAF250A", None, None],
         "POS8": ["TipGEBAF250A", None, None],
-        "POS9": ["96_wellplate_flat_bottom", None, None],
-        "POS10": ["96_wellplate_flat_bottom", None, None],
-        "POS11": ["96_wellplate_flat_bottom", None, None],
-        "POS12": ["96_wellplate_flat_bottom", None, None],
-        "POS13": ["96_wellplate_flat_bottom", None, None],
-        "POS14": ["96_wellplate_flat_bottom", None, None],
-        "POS15": ["96_wellplate_flat_bottom", None, None],
-        "POS16": ["96_wellplate_flat_bottom", None, None],
+        "POS9": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS10": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS11": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS12": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS13": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS14": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS15": ["corning_REF3596_96_wp_flat_bottom", None, None],
+        "POS16": ["corning_REF3596_96_wp_flat_bottom", None, None],
         "POS17": ["TipGEBAF250A", None, None],
         "POS18": ["SuzhouChenxuCAR-190NS", None, None],
         "POS19": ["VDeepwellPlateDN07350501", None, None],
@@ -125,7 +189,7 @@ tryple_res = "POS23"
 pbs_plate_wash_tips = "POS2"
 new_media_res = "POS24"
 # defining the default user input variables
-plate_type = "96_wellplate_flat_bottom"
+plate_type = "corning_REF3596_96_wp_flat_bottom"
 pbs_wash_cycle = 2
 number_plates = 1
 out_media_vol = 180
@@ -135,7 +199,14 @@ aspirate_z_offset = 0.4
 aspirate_speed = 60
 # asks the user for the inputs
 s_require3_result = require3(
-    [{"Select plate type": ["96_wellplate_flat_bottom", "96_wellplate_u_bottom"]}],
+    [
+        {
+            "Select plate type": [
+                "corning_REF3596_96_wp_flat_bottom",
+                "nunclon_sphera_174925_96_wp_u_bottom",
+            ]
+        }
+    ],
     [
         {"Number of plates": ["1", "Integer between 1-4"]},
         {"Volume of media to remove": ["200", "Integer between 0-300"]},
