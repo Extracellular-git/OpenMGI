@@ -205,6 +205,36 @@ s_require3_result = require3(
                 "corning_REF3596_96_wp_flat_bottom",
                 "nunclon_sphera_174925_96_wp_u_bottom",
             ]
+        },
+        {
+            "Perform removal of old media": [
+                "Yes",
+                "No"
+            ]
+        },
+        {
+            "Perform PBS wash": [
+                "Yes",
+                "No"
+            ]
+        },
+        {
+            "Perform TrypLE wash": [
+                "Yes",
+                "No"
+            ]
+        },
+        {
+            "Perform mix after TrypLE addition": [
+                "Yes",
+                "No"
+            ]
+        },
+        {
+            "Perform inoculation": [
+                "Yes",
+                "No"
+            ]
         }
     ],
     [
@@ -217,35 +247,31 @@ s_require3_result = require3(
             ]
         },
         {"Volume of fresh media": ["180", "Integer between 0-300"]},
+        {"Volume of TrypLE to add": ["100", "Integer between 0-175"]},
         {"Volume to inoculate": ["20", "Integer between 0-175"]},
         {"Aspiration height offset": ["0.4", "mm of height offset, between 0-10"]},
         {"Aspiration speed": ["60", "Rate of aspiration, 0-100"]},
-        {
-            "Perform removal of old media": [
-                "1",
-                "Whether to remove old media, 0 = no, 1 = yes",
-            ]
-        },
-        {"Perform PBS wash": ["1", "Whether to do PBS wash, 0 = no, 1 = yes"]},
-        {"Perform TrypLE wash": ["1", "Whether to do TrypLE wash, 0 = no, 1 = yes"]},
-        {"Perform TrypLE wash": ["1", "Whether to do TrypLE wash, 0 = no, 1 = yes"]},
-        {"Perform inoculation": ["1", "Whether to do inoculation, 0 = no, 1 = yes"]},
     ],
 )
 # indexes the provided user inputs and converts data type as appropriate
+bool_dict = {
+    "Yes": True,
+    "No": False
+}
 plate_type = s_require3_result.Item1[0]
+old_media_bool = bool_dict[s_require3_result.Item1[1]]
+pbs_plate_wash_bool = bool_dict[s_require3_result.Item1[2]]
+tryple_wash_bool = bool_dict[s_require3_result.Item1[3]]
+new_media_bool = bool_dict[s_require3_result.Item1[4]]
+inoculation_bool = bool_dict[s_require3_result.Item1[5]]
 number_plates = min(int(s_require3_result.Item2[0]), 4)
 out_media_vol = min(int(s_require3_result.Item2[1]), 300)
 pbs_wash_cycle = min(int(s_require3_result.Item2[2]), 10)
 new_media_vol = min(int(s_require3_result.Item2[3]), 300)
-inoc_vol = min(int(s_require3_result.Item2[4]), 175)
-aspirate_z_offset = min(float(s_require3_result.Item2[5]), 10)
-aspirate_speed = min(int(s_require3_result.Item2[6]), 100)
-old_media_bool = bool(min(int(s_require3_result.Item2[7]), 1))
-pbs_plate_wash_bool = bool(min(int(s_require3_result.Item2[8]), 1))
-tryple_wash_bool = bool(min(int(s_require3_result.Item2[9]), 1))
-new_media_bool = bool(min(int(s_require3_result.Item2[10]), 1))
-inoculation_bool = bool(min(int(s_require3_result.Item2[11]), 1))
+tryple_vol = min(int(s_require3_result.Item2[4]), 180)
+inoc_vol = min(int(s_require3_result.Item2[5]), 175)
+aspirate_z_offset = min(float(s_require3_result.Item2[6]), 10)
+aspirate_speed = min(int(s_require3_result.Item2[7]), 100)
 # Update map based on chosen plate_type
 
 update_feature(
@@ -527,26 +553,26 @@ if pbs_plate_wash_bool:
 if tryple_wash_bool:
     report("TrypLE", "Start")
     load_tips({"Module": tryple_tips, "Tips": 96, "Col": 1, "Row": 1})
-    report("TrypLE", "Aspirate TrypLE")
-    aspirate(
-        {
-            "Module": tryple_res,
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "AspirateVolume": 20 * number_plates + 10,
-            "BottomOffsetOfZ": 1,
-            "AspirateRateOfP": aspirate_speed,
-            "PreAirVolume": 0,
-            "PostAirVolume": 0,
-            "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 10,
-            "TipTouchOffsetOfX": 3,
-            "SecondRouteRate": 35,
-        }
-    )
     for plate in old_plates_list:
+        report("TrypLE", "Aspirate TrypLE")
+        aspirate(
+            {
+                "Module": tryple_res,
+                "Tips": 96,
+                "Col": 1,
+                "Row": 1,
+                "AspirateVolume": tryple_vol + 5,
+                "BottomOffsetOfZ": 1,
+                "AspirateRateOfP": aspirate_speed,
+                "PreAirVolume": 0,
+                "PostAirVolume": 0,
+                "DelySeconds": 0,
+                "IfTipTouch": False,
+                "TipTouchHeight": 10,
+                "TipTouchOffsetOfX": 3,
+                "SecondRouteRate": 35,
+            }
+        )
         report("TrypLE", "Dispense TrypLE to " + str(plate))
         dispense(
             {
@@ -554,31 +580,31 @@ if tryple_wash_bool:
                 "Tips": 96,
                 "Col": 1,
                 "Row": 1,
-                "DispenseVolume": 20,
+                "DispenseVolume": tryple_vol,
                 "BottomOffsetOfZ": 8,
                 "DispenseRateOfP": 60,
                 "DelySeconds": 0,
-                "IfTipTouch": False,
-                "TipTouchHeight": 8,
+                "IfTipTouch": True,
+                "TipTouchHeight": 9,
                 "TipTouchOffsetOfX": 3,
                 "SecondRouteRate": 35,
             }
         )
-    empty(
-        {
-            "Module": tryple_res,
-            "Tips": 96,
-            "Col": 1,
-            "Row": 1,
-            "BottomOffsetOfZ": 1,
-            "DispenseRateOfP": 70,
-            "DelySeconds": 0,
-            "IfTipTouch": False,
-            "TipTouchHeight": 8,
-            "TipTouchOffsetOfX": 3,
-            "SecondRouteRate": 35,
-        }
-    )
+    # empty(
+    #     {
+    #         "Module": tryple_res,
+    #         "Tips": 96,
+    #         "Col": 1,
+    #         "Row": 1,
+    #         "BottomOffsetOfZ": 1,
+    #         "DispenseRateOfP": 70,
+    #         "DelySeconds": 0,
+    #         "IfTipTouch": False,
+    #         "TipTouchHeight": 8,
+    #         "TipTouchOffsetOfX": 3,
+    #         "SecondRouteRate": 35,
+    #     }
+    # )
     unload_tips({"Module": tryple_tips, "Tips": 96, "Col": 1, "Row": 1})
     report("TrypLE", "Incubation")
     unlock()
@@ -624,7 +650,7 @@ if new_media_bool:
                     "PreAirVolume": 0,
                     "PostAirVolume": 0,
                     "DelySeconds": 0,
-                    "IfTipTouch": False,
+                    "IfTipTouch": True,
                     "TipTouchHeight": 10,
                     "TipTouchOffsetOfX": 3,
                     "SecondRouteRate": 35,
