@@ -248,6 +248,7 @@ s_require3_result = require3(
         },
         {"Volume of fresh media": ["180", "Integer between 0-300"]},
         {"Volume of TrypLE to add": ["100", "Integer between 0-175"]},
+        {"Volume of media for resuspension/neutralisation of TrypLE": ["100", "Integer between 0-200"]},
         {"Volume to inoculate": ["20", "Integer between 0-175"]},
         {"Aspiration height offset": ["0.4", "mm of height offset, between 0-10"]},
         {"Aspiration speed": ["60", "Rate of aspiration, 0-100"]},
@@ -269,9 +270,10 @@ out_media_vol = min(int(s_require3_result.Item2[1]), 300)
 pbs_wash_cycle = min(int(s_require3_result.Item2[2]), 10)
 new_media_vol = min(int(s_require3_result.Item2[3]), 300)
 tryple_vol = min(int(s_require3_result.Item2[4]), 180)
-inoc_vol = min(int(s_require3_result.Item2[5]), 175)
-aspirate_z_offset = min(float(s_require3_result.Item2[6]), 10)
-aspirate_speed = min(int(s_require3_result.Item2[7]), 100)
+resuspension_media_vol = min(int(s_require3_result.Item2[4]), 200)
+inoc_vol = min(int(s_require3_result.Item2[6]), 175)
+aspirate_z_offset = min(float(s_require3_result.Item2[7]), 10)
+aspirate_speed = min(int(s_require3_result.Item2[8]), 100)
 # Update map based on chosen plate_type
 
 update_feature(
@@ -409,8 +411,8 @@ if old_media_bool:
                     "DispenseRateOfP": 100,
                     "DelySeconds": 0,
                     "IfTipTouch": True,
-                    "TipTouchHeight": waste_height_offset,
-                    "TipTouchOffsetOfX": waste_touch_offset,
+                    "TipTouchHeight": 10,
+                    "TipTouchOffsetOfX": 3,
                     "SecondRouteRate": 35,
                 }
             )
@@ -667,14 +669,18 @@ if inoculation_bool:
     for num, plate in enumerate(old_plates_list):
         report("Inoculation", "Adding fresh media to old Plate " + str(num + 1))
         load_tips({"Module": inoc_tips_list[num], "Tips": 96, "Col": 1, "Row": 1})
-        for idx in range(2):
+        if resuspension_media_vol > 170:
+            repeat = 2
+        else:
+            repeat = 1
+        for idx in range(repeat):
             aspirate(
                 {
                     "Module": new_media_res,
                     "Tips": 96,
                     "Col": 1,
                     "Row": 1,
-                    "AspirateVolume": (new_media_vol / 2),
+                    "AspirateVolume": (new_media_vol / repeat),
                     "BottomOffsetOfZ": 1,
                     "AspirateRateOfP": aspirate_speed,
                     "PreAirVolume": 0,
