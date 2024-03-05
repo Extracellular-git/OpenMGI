@@ -1,0 +1,89 @@
+[
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCRBioRadHSP9601",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCRDN",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCRAXYGENHSC",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCRMST96DM",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "DeepwellPlates",
+    "ConsumableName": "DeepwellPlateDT7350504",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCRMGILID",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "Tips",
+    "ConsumableName": "TipGEBAF250A",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "Tips",
+    "ConsumableName": "EmptyTipGEBAF250A",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCRMGILIDHOLD",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PlateReservoirs",
+    "ConsumableName": "SuzhouChenxuCAR-190NS",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "MGIBase+DNPCR",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "DeepwellPlates",
+    "ConsumableName": "VDeepwellPlateDN07350501",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PlateReservoirs",
+    "ConsumableName": "TipBoxLid",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "Tips",
+    "ConsumableName": "TipMGIAFT70",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "PCR384-JK",
+    "IsActivated": true,
+    "Brand": "Jet Keen",
+    "Description": "PC-0040-PP"
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "corning_REF3596_96_wp_flat_bottom",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "nunclon_sphera_174925_96_wp_u_bottom",
+    "IsActivated": true
+  }
+]

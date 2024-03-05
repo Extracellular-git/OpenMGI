@@ -1,0 +1,51 @@
+[
+  {
+    "ConsumableName": {
+      "Cn": "吸头",
+      "En": "Tips"
+    },
+    "Consumables": [
+      "TipGEBAF250A",
+      "EmptyTipGEBAF250A",
+      "TipMGIAFT70"
+    ]
+  },
+  {
+    "ConsumableName": {
+      "Cn": "深孔板",
+      "En": "Deepwell Plates"
+    },
+    "Consumables": [
+      "DeepwellPlateDT7350504",
+      "VDeepwellPlateDN07350501"
+    ]
+  },
+  {
+    "ConsumableName": {
+      "Cn": "PCR板",
+      "En": "PCR Plates"
+    },
+    "Consumables": [
+      "PCRBioRadHSP9601",
+      "PCRDN",
+      "PCRAXYGENHSC",
+      "PCRMST96DM",
+      "PCRMGILID",
+      "PCRMGILIDHOLD",
+      "MGIBase+DNPCR",
+      "PCR384-JK",
+      "corning_REF3596_96_wp_flat_bottom",
+      "nunclon_sphera_174925_96_wp_u_bottom"
+    ]
+  },
+  {
+    "ConsumableName": {
+      "Cn": "板槽",
+      "En": "Plate Reservoirs"
+    },
+    "Consumables": [
+      "SuzhouChenxuCAR-190NS",
+      "TipBoxLid"
+    ]
+  }
+]
