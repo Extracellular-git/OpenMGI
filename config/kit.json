@@ -232,5 +232,18 @@
     "ColSpace": 9,
     "GraspOffsetOfZ": 9,
     "GraspOffsetOfG": 2.5
-  }
+  },
+  {
+    "Name": "384test",
+    "Width": 85.5,
+    "Length": 127.8,
+    "Hight": 9.6,
+    "ConsumeBottomOfZ": 0.7,
+    "RowCounts": 16,
+    "ColCounts": 24,
+    "RowSpace": 4.5,
+    "ColSpace": 4.5,
+    "GraspOffsetOfZ": 6.0,
+    "GraspOffsetOfG": 1.0
+  },
 ]
