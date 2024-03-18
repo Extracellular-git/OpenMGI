@@ -1,0 +1,142 @@
+﻿{
+  "ConsumableName": {
+    "Cn": "384test",
+    "En": "384test"
+  },
+  "Icon": "Config\\Sp96\\KitImage\\PCR384-JK.jpg",
+  "Active": true,
+  "Info": [
+    {
+      "Name": {
+        "Cn": "名称",
+        "En": "Name"
+      },
+      "Value": {
+        "Cn": "384test",
+        "En": "384test"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "品牌",
+        "En": "Brand"
+      },
+      "Value": {
+        "Cn": "null",
+        "En": "null"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "描述",
+        "En": "Description"
+      },
+      "Value": {
+        "Cn": "PC-0040-PP",
+        "En": "PC-0040-PP"
+      }
+    }
+  ],
+  "Size": [
+    {
+      "Name": {
+        "Cn": "长(mm)",
+        "En": "Length(mm)"
+      },
+      "Value": {
+        "Cn": "127.8",
+        "En": "127.8"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "宽(mm)",
+        "En": "Width(mm)"
+      },
+      "Value": {
+        "Cn": "85.5",
+        "En": "85.5"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "高(mm)",
+        "En": "Height(mm)"
+      },
+      "Value": {
+        "Cn": "9.6",
+        "En": "9.6"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "行数",
+        "En": "Rows"
+      },
+      "Value": {
+        "Cn": "16",
+        "En": "16"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "列数",
+        "En": "Cols"
+      },
+      "Value": {
+        "Cn": "24",
+        "En": "24"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "行间距(mm)",
+        "En": "RowSpacing(mm)"
+      },
+      "Value": {
+        "Cn": "4.5",
+        "En": "4.5"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "列间距(mm)",
+        "En": "ColSpacing(mm)"
+      },
+      "Value": {
+        "Cn": "4.5",
+        "En": "4.5"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "孔内底高度(mm)",
+        "En": "InnerWellBottomHeight(mm)"
+      },
+      "Value": {
+        "Cn": "0.7",
+        "En": "0.7"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "夹爪抓取Z轴偏移(mm)",
+        "En": "GripperPickUpOffsetOfZ(mm)"
+      },
+      "Value": {
+        "Cn": "6",
+        "En": "6"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "夹爪夹紧距离(mm)",
+        "En": "GripperTightenDistance(mm)"
+      },
+      "Value": {
+        "Cn": "1",
+        "En": "1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+﻿{
+  "ConsumableName": {
+    "Cn": "MGIBase+DNPCR",
+    "En": "MGIBase+DNPCR"
+  },
+  "Icon": "Config\\Sp96\\KitImage\\MGIBase+DNPCR.jpg",
+  "Active": true,
+  "Info": [
+    {
+      "Name": {
+        "Cn": "名称",
+        "En": "Name"
+      },
+      "Value": {
+        "Cn": "MGIBase+DNPCR",
+        "En": "MGIBase+DNPCR"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "品牌",
+        "En": "Brand"
+      },
+      "Value": {
+        "Cn": null,
+        "En": null
+      }
+    },
+    {
+      "Name": {
+        "Cn": "描述",
+        "En": "Description"
+      },
+      "Value": {
+        "Cn": null,
+        "En": null
+      }
+    }
+  ],
+  "Size": [
+    {
+      "Name": {
+        "Cn": "长(mm)",
+        "En": "Length(mm)"
+      },
+      "Value": {
+        "Cn": "126",
+        "En": "126"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "宽(mm)",
+        "En": "Width(mm)"
+      },
+      "Value": {
+        "Cn": "85",
+        "En": "85"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "高(mm)",
+        "En": "Height(mm)"
+      },
+      "Value": {
+        "Cn": "22",
+        "En": "22"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "行数",
+        "En": "Rows"
+      },
+      "Value": {
+        "Cn": "8",
+        "En": "8"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "列数",
+        "En": "Cols"
+      },
+      "Value": {
+        "Cn": "12",
+        "En": "12"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "行间距(mm)",
+        "En": "RowSpacing(mm)"
+      },
+      "Value": {
+        "Cn": "9",
+        "En": "9"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "列间距(mm)",
+        "En": "ColSpacing(mm)"
+      },
+      "Value": {
+        "Cn": "9",
+        "En": "9"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "孔内底高度(mm)",
+        "En": "InnerWellBottomHeight(mm)"
+      },
+      "Value": {
+        "Cn": "1.7",
+        "En": "1.7"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "夹爪抓取Z轴偏移(mm)",
+        "En": "GripperPickUpOffsetOfZ(mm)"
+      },
+      "Value": {
+        "Cn": "8",
+        "En": "8"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "夹爪夹紧距离(mm)",
+        "En": "GripperTightenDistance(mm)"
+      },
+      "Value": {
+        "Cn": "1",
+        "En": "1"
+      }
+    }
+  ]
+}
