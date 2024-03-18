@@ -7,27 +7,27 @@
   {
     "CategoryName": "PCRPlates",
     "ConsumableName": "PCRDN",
-    "IsActivated": true
+    "IsActivated": false
   },
   {
     "CategoryName": "PCRPlates",
     "ConsumableName": "PCRAXYGENHSC",
-    "IsActivated": true
+    "IsActivated": false
   },
   {
     "CategoryName": "PCRPlates",
     "ConsumableName": "PCRMST96DM",
-    "IsActivated": true
+    "IsActivated": false
   },
   {
     "CategoryName": "DeepwellPlates",
     "ConsumableName": "DeepwellPlateDT7350504",
-    "IsActivated": true
+    "IsActivated": false
   },
   {
     "CategoryName": "PCRPlates",
     "ConsumableName": "PCRMGILID",
-    "IsActivated": true
+    "IsActivated": false
   },
   {
     "CategoryName": "Tips",
@@ -42,7 +42,7 @@
   {
     "CategoryName": "PCRPlates",
     "ConsumableName": "PCRMGILIDHOLD",
-    "IsActivated": true
+    "IsActivated": false
   },
   {
     "CategoryName": "PlateReservoirs",
@@ -60,8 +60,18 @@
     "IsActivated": true
   },
   {
+    "CategoryName": "DeepwellPlates",
+    "ConsumableName": "deepwell_plate",
+    "IsActivated": true
+  },
+  {
     "CategoryName": "PlateReservoirs",
     "ConsumableName": "TipBoxLid",
+    "IsActivated": true
+  },
+  {
+    "CategoryName": "PlateReservoirs",
+    "ConsumableName": "Reservoir",
     "IsActivated": true
   },
   {
@@ -85,5 +95,10 @@
     "CategoryName": "PCRPlates",
     "ConsumableName": "nunclon_sphera_174925_96_wp_u_bottom",
     "IsActivated": true
-  }
+  },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "384test",
+    "IsActivated": true
+  },
 ]

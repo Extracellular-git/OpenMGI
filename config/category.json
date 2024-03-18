@@ -16,8 +16,8 @@
       "En": "Deepwell Plates"
     },
     "Consumables": [
-      "DeepwellPlateDT7350504",
       "VDeepwellPlateDN07350501"
+      "deepwell_plate"
     ]
   },
   {
@@ -26,16 +26,10 @@
       "En": "PCR Plates"
     },
     "Consumables": [
-      "PCRBioRadHSP9601",
-      "PCRDN",
-      "PCRAXYGENHSC",
-      "PCRMST96DM",
-      "PCRMGILID",
-      "PCRMGILIDHOLD",
-      "MGIBase+DNPCR",
       "PCR384-JK",
       "corning_REF3596_96_wp_flat_bottom",
-      "nunclon_sphera_174925_96_wp_u_bottom"
+      "nunclon_sphera_174925_96_wp_u_bottom",
+      "384test"
     ]
   },
   {
@@ -45,6 +39,7 @@
     },
     "Consumables": [
       "SuzhouChenxuCAR-190NS",
+      "Reservoir",
       "TipBoxLid"
     ]
   }

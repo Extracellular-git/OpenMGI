@@ -130,6 +130,19 @@
     "GraspOffsetOfG": 1.5
   },
   {
+    "Name": "Reservoir",
+    "Width": 81.0,
+    "Length": 100.0,
+    "Hight": 31.0,
+    "ConsumeBottomOfZ": 6.5,
+    "RowCounts": 8,
+    "ColCounts": 12,
+    "RowSpace": 9.0,
+    "ColSpace": 9.0,
+    "GraspOffsetOfZ": 14.0,
+    "GraspOffsetOfG": 1.5
+  },
+  {
     "Name": "MGIBase+DNPCR",
     "Width": 85.0,
     "Length": 126.0,
@@ -144,6 +157,19 @@
   },
   {
     "Name": "VDeepwellPlateDN07350501",
+    "Width": 81.0,
+    "Length": 100.0,
+    "Hight": 43.0,
+    "ConsumeBottomOfZ": 2.3,
+    "RowCounts": 8,
+    "ColCounts": 12,
+    "RowSpace": 9.0,
+    "ColSpace": 9.0,
+    "GraspOffsetOfZ": 25.0,
+    "GraspOffsetOfG": 1.5
+  },
+  {
+    "Name": "deepwell_plate",
     "Width": 81.0,
     "Length": 100.0,
     "Hight": 43.0,
