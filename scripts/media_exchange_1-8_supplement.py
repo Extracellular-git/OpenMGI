@@ -149,6 +149,7 @@ s_require3_result = require3(
         {"Volume of media to remove": ["200", "Integer between 0-300"]},
         {"Volume of fresh media": ["180", "Integer between 0-300"]},
         {"Number of supplement plates": ["1", "Integer between 0-4"]},
+        {"Volume of supplement to add": ["20", "Integer between 0-20"]},
         {
             "Supplement 1 goes into which plates?": [
                 "",
@@ -181,11 +182,12 @@ number_plates = min(int(s_require3_result.Item2[0]), 8)
 out_media_vol = min(int(s_require3_result.Item2[1]), 300)
 in_media_vol = min(int(s_require3_result.Item2[2]), 300)
 number_supplement_plates = min(int(s_require3_result.Item2[3]), 4)
+supp_vol = min(int(s_require3_result.Item2[4]), 20)
 supplement_additions = [
-    [int(num) for num in s_require3_result.Item2[4].split(",")],
     [int(num) for num in s_require3_result.Item2[5].split(",")],
     [int(num) for num in s_require3_result.Item2[6].split(",")],
     [int(num) for num in s_require3_result.Item2[7].split(",")],
+    [int(num) for num in s_require3_result.Item2[8].split(",")],
 ]
 # parse supplement additions to plate positions
 plate_pos_dict = {
