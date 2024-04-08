@@ -1,0 +1,142 @@
+﻿{
+  "ConsumableName": {
+    "Cn": "phenoplate_384_ula",
+    "En": "phenoplate_384_ula"
+  },
+  "Icon": "Config\\Sp96\\KitImage\\384wp.jpg",
+  "Active": true,
+  "Info": [
+    {
+      "Name": {
+        "Cn": "名称",
+        "En": "Name"
+      },
+      "Value": {
+        "Cn": "phenoplate_384_ula",
+        "En": "phenoplate_384_ula"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "品牌",
+        "En": "Brand"
+      },
+      "Value": {
+        "Cn": "Revvity",
+        "En": "Revvity"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "描述",
+        "En": "Description"
+      },
+      "Value": {
+        "Cn": "Revvity PRD PhenoPlate 384 well plate, Ultra low attachment coating.",
+        "En": "Revvity PRD PhenoPlate 384 well plate, Ultra low attachment coating."
+      }
+    }
+  ],
+  "Size": [
+    {
+      "Name": {
+        "Cn": "长(mm)",
+        "En": "Length(mm)"
+      },
+      "Value": {
+        "Cn": "127.8",
+        "En": "127.8"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "宽(mm)",
+        "En": "Width(mm)"
+      },
+      "Value": {
+        "Cn": "85.5",
+        "En": "85.5"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "高(mm)",
+        "En": "Height(mm)"
+      },
+      "Value": {
+        "Cn": "14.35",
+        "En": "14.35"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "行数",
+        "En": "Rows"
+      },
+      "Value": {
+        "Cn": "16",
+        "En": "16"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "列数",
+        "En": "Cols"
+      },
+      "Value": {
+        "Cn": "24",
+        "En": "24"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "行间距(mm)",
+        "En": "RowSpacing(mm)"
+      },
+      "Value": {
+        "Cn": "4.5",
+        "En": "4.5"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "列间距(mm)",
+        "En": "ColSpacing(mm)"
+      },
+      "Value": {
+        "Cn": "4.5",
+        "En": "4.5"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "孔内底高度(mm)",
+        "En": "InnerWellBottomHeight(mm)"
+      },
+      "Value": {
+        "Cn": "0.2",
+        "En": "0.2"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "夹爪抓取Z轴偏移(mm)",
+        "En": "GripperPickUpOffsetOfZ(mm)"
+      },
+      "Value": {
+        "Cn": "6",
+        "En": "6"
+      }
+    },
+    {
+      "Name": {
+        "Cn": "夹爪夹紧距离(mm)",
+        "En": "GripperTightenDistance(mm)"
+      },
+      "Value": {
+        "Cn": "1",
+        "En": "1"
+      }
+    }
+  ]
+}

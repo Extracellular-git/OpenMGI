@@ -272,4 +272,17 @@
     "GraspOffsetOfZ": 6.0,
     "GraspOffsetOfG": 1.0
   },
+  {
+    "Name": "phenoplate_384_ula",
+    "Width": 85.5,
+    "Length": 127.8,
+    "Hight": 14.35,
+    "ConsumeBottomOfZ": 0.2,
+    "RowCounts": 16,
+    "ColCounts": 24,
+    "RowSpace": 4.5,
+    "ColSpace": 4.5,
+    "GraspOffsetOfZ": 6.0,
+    "GraspOffsetOfG": 1.0
+  }
 ]

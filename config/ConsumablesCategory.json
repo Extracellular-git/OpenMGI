@@ -101,4 +101,9 @@
     "ConsumableName": "384test",
     "IsActivated": true
   },
+  {
+    "CategoryName": "PCRPlates",
+    "ConsumableName": "phenoplate_384_ula",
+    "IsActivated": true
+  }
 ]
