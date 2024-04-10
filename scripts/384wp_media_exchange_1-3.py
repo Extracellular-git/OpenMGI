@@ -115,12 +115,12 @@ use_plates_list = plates_list[0:num_plates]
 
 report("Removal of old media", "Start")
 for idx, plate in enumerate(use_plates_list):
-    report("Removal of old media", "Load tips for plate" + idx+1)
+    report("Removal of old media", "Load tips for plate" + str(idx+1))
     load_tips({"Module": waste_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1})
     s_avoidBodyEmpty = 1
     for row in [1, 2]:
         for col in [1, 2]:
-            report("Removal of old media", "Plate " + idx+1 + ", Row: " + row + ", Col: " + col)
+            report("Removal of old media", "Plate " + str(idx+1) + ", Row: " + str(row) + ", Col: " + str(col))
             aspirate(
                 {
                     "Module": plate,
@@ -157,7 +157,7 @@ for idx, plate in enumerate(use_plates_list):
                     "SecondRouteRate": second_route_rate,
                 }
             )
-    report("Removal of old media", "Unload tips for plate" + idx+1)
+    report("Removal of old media", "Unload tips for plate" + str(idx+1))
     unload_tips({"Module": waste_tips_list[idx], "Tips": 96, "Col": 1, "Row": 1})
 
 report("Removal of old media", "End")
@@ -167,7 +167,7 @@ report("Addition of fresh media", "Load tips")
 load_tips({"Module": new_media_tips, "Tips": 96, "Col": 1, "Row": 1})
 for idx, plate in enumerate(use_plates_list):
     s_avoidBodyEmpty = 1
-    report("Addition of fresh media", "Plate " + idx+1)
+    report("Addition of fresh media", "Plate " + str(idx+1))
     for row in [1, 2]:
         for col in [1, 2]:
             aspirate(
@@ -188,7 +188,7 @@ for idx, plate in enumerate(use_plates_list):
                     "SecondRouteRate": second_route_rate,
                 }
             )
-            report("Addition of fresh media", "Plate " + idx+1 + ", Row: " + row + ", Col: " + col)
+            report("Addition of fresh media", "Plate " + str(idx+1) + ", Row: " + str(row) + ", Col: " + str(col))
             empty(
                 {
                     "Module": plate,
