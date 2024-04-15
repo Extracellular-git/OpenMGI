@@ -39,7 +39,7 @@ def first_feature():
         ("POS13", "reservoir", "Fresh media", "", False, True, ""),
         ("POS14", "", "", "", False, True, ""),
         ("POS15", "", "", "", False, True, ""),
-        ("POS16", "reservoir", "Waste media", "", False, True, ""),
+        ("POS16", "deepwell_plate", "Waste media", "", False, True, ""),
         ("POS17", "", "", "", False, True, ""),
         ("POS18", "", "", "", False, True, "Magnet"),
         ("POS19", "", "", "", False, True, "Magnet"),
@@ -68,7 +68,7 @@ binding_map(
         "POS13": ["reservoir", None, None],
         "POS14": [None, None, None],
         "POS15": [None, None, None],
-        "POS16": ["reservoir", None, None],
+        "POS16": ["deepwell_plate", None, None],
         "POS17": [None, None, None],
         "POS18": [None, None, None],
         "POS19": [None, None, None],
@@ -97,7 +97,9 @@ aspirate_rate = 5  # aspiration rate for old media
 second_route_rate = 70
 plates_list = ["POS5", "POS6", "POS7"]
 media_add_height = 10
+
 initialize()
+unlock()
 
 s_require3_result = require3(
     [],
@@ -151,9 +153,9 @@ for idx, plate in enumerate(use_plates_list):
                     "BottomOffsetOfZ": waste_empty_height,
                     "DispenseRateOfP": 100,
                     "DelySeconds": 0,
-                    "IfTipTouch": False,
-                    "TipTouchHeight": 20,
-                    "TipTouchOffsetOfX": 0,
+                    "IfTipTouch": True,
+                    "TipTouchHeight": 30,
+                    "TipTouchOffsetOfX": 2.8,
                     "SecondRouteRate": second_route_rate,
                 }
             )
